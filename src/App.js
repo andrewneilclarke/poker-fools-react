@@ -9,8 +9,8 @@ const cardBack = Object.values(Deck)[52]
 
 function App() {
   const [cards, setCards] = useState([])
-  const [player1, setPlayer1] = useState({ cards: [], stack: 300, name: 'player1' })
-  const [player2, setPlayer2] = useState({ cards: [], stack: 300, name: 'player2' })
+  const [player1, setPlayer1] = useState({ cards: [], stack: 300, name: 'player1', dealer: true })
+  const [player2, setPlayer2] = useState({ cards: [], stack: 300, name: 'player2', dealer: false })
   const [table, setTable] = useState([])
   const [gameOver, setGameOver] = useState(null)
 
@@ -43,12 +43,36 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Poker Fools</h1>
+      <h3>Poker Fools</h3>
       <button onClick={() => dealFlop(table, player1, player2)}>New Game</button>
       <div className="table">
         {!gameOver && table.map(card => (
           <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} />
         ))}
+      </div>
+      <div className="players">
+        <div className="player">
+          {player1.cards.map(card => (
+            <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={false} />))
+          }
+          {player1.dealer && <p>D</p>}
+
+        </div>
+        <div className="player">
+          {player2.cards.map(card => (
+            <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={false} />
+          ))
+          }
+          {player2.dealer && <p>D</p>}
+        </div>
+
+      </div>
+      <div>
+        {JSON.stringify(player1)}
+
+      </div>
+      <div>
+        {JSON.stringify(player2)}
       </div>
     </div>
   );

@@ -7,3 +7,43 @@
     width: 100%;
     display: block;
 }
+/* caard back (unflipped) */
+.card .flipped .back {
+    color: rgb(137, 61, 236);
+}
+/* card back (flipped) */
+#cardback {
+    /* position: absolute; */
+    /* display: none; */
+    opacity: 0;
+}
+
+.card .front {
+    color: black;
+}
+.card .flipped .front {
+    color: black;
+}
+
+/* red cards */
+.card .front.red, .front {
+    color: rgb(241, 45, 61);
+    /* transform: rotateY(90deg);  */
+    position: absolute;
+}
+.card .front, .front.red {
+    /* transform: rotateY(90deg); */
+    /* position: absolute;
+    color: greenyellow; */
+}
+/* red flipped cards */
+.card .flipped .front.red {
+    /* transform: rotateY(0deg); */
+    /* color:coral; */
+}
+/* black flipped cards */
+.card .flipped .front {
+    /* transform: rotateY(0deg); 
+    color:coral; */
+}
+/*  */

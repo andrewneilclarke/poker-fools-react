@@ -1,11 +1,12 @@
 .card {
-    position: relative;
+    position:relative;
+    display: inline;
 }
 
 .card div p {
-    font-size: 100px;
+    font-size: 80px;
     width: 100%;
-    display: block;
+    /* display: block; */
     color: rgb(137, 61, 236);
 }
 /* caard back (unflipped) */

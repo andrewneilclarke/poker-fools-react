@@ -13,7 +13,7 @@
 }
 
 .App h3 {
-  margin-bottom: .5em;
+  /* margin-bottom: .5em; */
 }
 button {
   background: hsl(283, 91%, 23%);
@@ -47,18 +47,22 @@ button:hover {
 }
 .player1, .player2 {
   display: flex;
+  flex-direction: column;
   align-items: center;
 }
 .player-details {
   font-size: medium;
   display: flex;
-  margin: 1em;
-  
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.cards {
+  display: flex;
 }
 
 .deck-container {
   font-size: 80px;
-  padding: 20px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

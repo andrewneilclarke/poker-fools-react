@@ -20,12 +20,6 @@ function App() {
 
   const getCardFace = (card) => Deck[card]
 
-  const shuffleCards = () => {
-    //shuffle the cards
-    liveDeck = liveDeck.sort(() => Math.random() - 0.5);
-    console.log('live deck: ', liveDeck)
-    // console.log(deckLength)
-  }
 
   useEffect(() => {
     // shuffle(liveDeck);
@@ -40,7 +34,6 @@ function App() {
     console.log(liveDeck)
   }
 
-
   const dealFlop = (table, player1, player2) => {
     player1.cards.push(liveDeck.pop())
     player2.cards.push(liveDeck.pop())
@@ -54,6 +47,14 @@ function App() {
     return liveDeck, player1, player2
   }
 
+  const dealTurn = (table, burnt, player1, player2) => {
+    burnt.push(liveDeck.pop())
+    table.push(liveDeck.pop())
+    setGameOver(false)
+    console.log('cards: ', liveDeck, 'table: ', table, 'player1 cards: ', player1.cards)
+    return liveDeck, player1, player2, burnt
+  }
+
   return (
     <div className="App">
       <div className='deck-container'>
@@ -63,11 +64,19 @@ function App() {
         </div>)
         )}
       </div>
+      <div className="burnt">
+        <p>Burnt</p>
+        {burnt.map(card =>
+        (<div id="deck">
+          <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
+        </div>))}
+      </div>
 
       <h3>Poker Fools</h3>
       <div className="buttons">
         <button onClick={shuffleandSet}>Shuffle</button>
-        <button onClick={() => dealFlop(table, player1, player2)}>Deal</button>
+        <button onClick={() => dealFlop(table, player1, player2)}>Deal Flop</button>
+        <button onClick={() => dealTurn(table, burnt, player1, player2)}>Deal Turn</button>
       </div>
       <div className="table-and-players">
         <div className="table">
@@ -77,26 +86,32 @@ function App() {
         </div>
         <div className="players">
           <div className="player1">
-            {player1.cards.map(card => (
-              <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />))
-            }
-            {player1.dealer && player1.cards.length === 2 && <p>D</p>}
+            <p>{player1.name.toUpperCase()} {player1.dealer && player1.cards.length === 2 && 'D'} </p>
+
+            <div className="cards">
+              {player1.cards.map(card => (
+                <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />))
+              }
+            </div>
+
             <div className="player-details">
               <p>{JSON.stringify(player1.cards)}</p>
               <p>{JSON.stringify(player1.stack)}</p>
-              <p>{JSON.stringify(player1.name)}</p>
             </div>
           </div>
           <div className="player2">
-            {player2.cards.map(card => (
-              <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
-            ))
-            }
+            <p>{player2.name.toUpperCase()} {player2.dealer && player2.cards.length === 2 && 'D'} </p>
+            <div className="cards">
+              {player2.cards.map(card => (
+                <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
+              ))
+              }
+
+            </div>
             {player2.dealer && player2.cards.length === 2 && <p>D</p>}
             <div className="player-details">
               <p>{JSON.stringify(player2.cards)}</p>
               <p>{JSON.stringify(player2.stack)}</p>
-              <p>{JSON.stringify(player2.name)}</p>
             </div>
           </div>
         </div>

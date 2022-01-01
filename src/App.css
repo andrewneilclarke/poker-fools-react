@@ -4,8 +4,12 @@
 
 
 .App {
-  max-width: 860px;
-  margin: 40px auto;
+  /* max-width: 860px; */
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
 }
 
 .App h3 {
@@ -26,22 +30,55 @@ button:hover {
   color: rgb(216, 216, 216);
 }
 .table {
-  margin-top: 40px;
+  font-size: 100px;
+  margin: 10px;
+  background-color: rgb(172, 235, 200);
+  border-radius: 25px;
+  padding: 7px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   gap: 20px;
 }
 
 .players {
-  margin-top: 40px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  /* display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px; */
 }
-.player {
+.player1, .player2 {
   display: flex;
+  align-items: center;
+}
+.player-details {
+  font-size: medium;
+  display: flex;
+  margin: 1em;
+  
+}
+
+.deck-container {
+  font-size: 80px;
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-and-players {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 90vw;
+}
+.table-and-players .card {
+  font-size: 110px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
   align-items: center;
 }

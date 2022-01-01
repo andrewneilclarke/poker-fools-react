@@ -1,4 +1,4 @@
-const Deck = {
+export const Deck = {
     '2H': '🂲',
     '3H': '🂳',
     '4H': '🂴',
@@ -54,4 +54,6 @@ const Deck = {
     BACK: '🂠'
 }
 
-export default Deck
+export const shuffle = (deck) => {
+    return [...deck.sort(() => Math.random() - 0.5)]
+} 

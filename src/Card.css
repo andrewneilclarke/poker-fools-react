@@ -3,9 +3,10 @@
 }
 
 .card div p {
-    font-size: 100px;
+    /* font-size: 100px; */
     width: 100%;
     display: block;
+    color: rgb(137, 61, 236);
 }
 /* caard back (unflipped) */
 .card .flipped .back {
@@ -16,6 +17,9 @@
     /* position: absolute; */
     /* display: none; */
     opacity: 0;
+}
+.card div .cardback {
+    color: rgb(137, 61, 236);
 }
 
 .card .front {
@@ -29,7 +33,7 @@
 .card .front.red, .front {
     color: rgb(241, 45, 61);
     /* transform: rotateY(90deg);  */
-    position: absolute;
+    /* position: absolute; */
 }
 .card .front, .front.red {
     /* transform: rotateY(90deg); */

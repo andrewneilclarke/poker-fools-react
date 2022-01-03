@@ -32,26 +32,32 @@ button:hover {
 .table {
   font-size: 100px;
   margin: 10px;
-  width: 420px;
-  height: 120px;
+  width: 40%;
+  height: 240px;
   position: relative;
   background-color: rgb(172, 235, 200);
   border-radius: 25px;
   padding: 7px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  align-items: center;
+  /* gap: 20px; */
+}
+.table p {
+  font-size: 1rem;
+  font-weight: 500;
+  align-self: center;
 }
 
 .players {
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-around
 }
-.player1, .player2 {
+.player1, .player2, .player3, .player4 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 10px;
 }
 .player-details {
   font-size: medium;
@@ -75,7 +81,7 @@ button:hover {
 
 .table-and-players {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: row;
   width: 90vw;

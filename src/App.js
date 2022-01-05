@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer } from 'react';
+import { betReducer } from './Reducer';
 import './App.css';
 import Card from './components/Card';
+import Player from './components/Player';
 import { Deck, shuffle } from './Deck'
 import { gameStage } from './GameStages';
 
@@ -9,13 +11,25 @@ const cardFaces = Object.values(Deck).slice(0, 52)
 const cardBack = Object.values(Deck)[52]
 let liveDeck = [...cardNames]
 
+const initialState = {
+  player1: { cards: [], stack: 300, bet: 0, name: 'player1', dealer: true },
+  player2: { cards: [], stack: 300, bet: 0, name: 'player2', dealer: false },
+  player3: { cards: [], stack: 300, bet: 0, name: 'player3', dealer: false, bigBlind: true },
+  player4: { cards: [], stack: 300, bet: 0, name: 'player4', dealer: false, smallBlind: true, active: true }
+
+}
+
 function App() {
   const [cards, setCards] = useState([])
-  const [player1, setPlayer1] = useState({ cards: [], stack: 300, name: 'player1', dealer: true })
-  const [player2, setPlayer2] = useState({ cards: [], stack: 300, name: 'player2', dealer: false })
-  const [player3, setPlayer3] = useState({ cards: [], stack: 300, name: 'player3', dealer: false })
-  const [player4, setPlayer4] = useState({ cards: [], stack: 300, name: 'player4', dealer: false })
-  const [noOfPlayers, setNoOfPlayers] = useState(4)
+  // const [player1, setplayer1] = useState({ cards: [], stack: 300, bet: 0, name: 'player1', dealer: true })
+  // const [player2, setplayer2] = useState({ cards: [], stack: 300, bet: 0, name: 'player2', dealer: false })
+  // const [player3, setplayer3] = useState({ cards: [], stack: 300, bet: 0, name: 'player3', dealer: false, bigBlind: true })
+  // const [player4, setplayer4] = useState({ cards: [], stack: 300, bet: 0, name: 'player4', dealer: false, smallBlind: true, active: true })
+
+  const [{ player1, player2, player3, player4 }, dispatch] = useReducer(betReducer, initialState)
+  // const [player1, player2, player3, player4] = state;
+
+  const players = [player1, player2, player3, player4]
   const [bigBlind, setBigBlind] = useState(20)
   const [table, setTable] = useState([])
   const [burnt, setBurnt] = useState([])
@@ -108,12 +122,24 @@ function App() {
   const nextGame = () => {
     setTable([])
     setBurnt([])
-    setPlayer1({ ...player1, cards: [] })
-    setPlayer2({ ...player2, cards: [] })
-    setPlayer3({ ...player3, cards: [] })
-    setPlayer4({ ...player4, cards: [] })
+    // setplayer1({ ...player1, cards: [] })
+    // setplayer2({ ...player2, cards: [] })
+    // setplayer3({ ...player3, cards: [] })
+    // setplayer4({ ...player4, cards: [] })
     setLiveDeck([...cardNames])
     // shuffleandSet()
+  }
+
+  const incrementBet = (player) => {
+    const newPlayer = { ...player, bet: smallBlind };
+    `set${player.name}`(newPlayer);
+    // console.log(player)
+
+    // const newPlayer = { ...player, bet: newBet }
+    // console.log(newPlayer)
+    // const playername = player.name[0].toUpperCase() + player.name.substring(1)
+    // const stateChange = `set${playername}`
+    // stateChange(newPlayer)
   }
 
   return (
@@ -156,65 +182,10 @@ function App() {
         </div>
 
         <div className="players">
-          <div className="player1">
-            <p>{player1.name.toUpperCase()} {player1.dealer && player1.cards.length === 2 && 'D'} </p>
-            <div className="cards">
-              {player1.cards.map(card => (
-                <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />))
-              }
-            </div>
+          {players.map(player => (
+            <Player key={player.name} player={player} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} smallBlind={smallBlind} dispatch={dispatch} />
 
-            <div className="player-details">
-              <p>{JSON.stringify(player1.cards)}</p>
-              <p>{JSON.stringify(player1.stack)}</p>
-            </div>
-          </div>
-
-          <div className="player2">
-            <p>{player2.name.toUpperCase()} {player2.dealer && player2.cards.length === 2 && 'D'} </p>
-            <div className="cards">
-              {player2.cards.map(card => (
-                <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
-              ))
-              }
-
-            </div>
-            {player2.dealer && player2.cards.length === 2 && <p>D</p>}
-            <div className="player-details">
-              <p>{JSON.stringify(player2.cards)}</p>
-              <p>{JSON.stringify(player2.stack)}</p>
-            </div>
-          </div>
-
-
-
-          <div className="player3">
-            <p>{player3.name.toUpperCase()} {player3.dealer && player3.cards.length === 2 && 'D'} </p>
-            <div className="cards">
-              {player3.cards.map(card => (
-                <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />))
-              }
-            </div>
-
-            <div className="player-details">
-              <p>{JSON.stringify(player3.cards)}</p>
-              <p>{JSON.stringify(player3.stack)}</p>
-            </div>
-          </div>
-          <div className="player4">
-            <p>{player4.name.toUpperCase()} {player4.dealer && player4.cards.length === 2 && 'D'} </p>
-            <div className="cards">
-              {player4.cards.map(card => (
-                <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />))
-              }
-            </div>
-
-            <div className="player-details">
-              <p>{JSON.stringify(player4.cards)}</p>
-              <p>{JSON.stringify(player4.stack)}</p>
-            </div>
-          </div>
-
+          ))}
         </div>
       </div>
       {gameResult && <p>{JSON.stringify(gameResult)}</p>}

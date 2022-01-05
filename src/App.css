@@ -10,6 +10,7 @@
   align-items: center;
   text-align: center;
   flex-direction: column;
+  font-size: small;
 }
 
 .App h3 {
@@ -34,7 +35,7 @@ button:hover {
   margin: 10px;
   width: 40%;
   height: 240px;
-  position: relative;
+  /* position: relative; */
   background-color: rgb(172, 235, 200);
   border-radius: 25px;
   padding: 7px;
@@ -50,8 +51,10 @@ button:hover {
 }
 
 .players {
-  display: flex;
-  justify-content: space-around
+  display: grid;
+  grid-template-columns: repeat(3, 200px);
+  grid-column-gap: 10px;
+  grid-template-rows: repeat(3, 180px);
 }
 .player1, .player2, .player3, .player4 {
   display: flex;
@@ -59,11 +62,35 @@ button:hover {
   align-items: center;
   margin: 10px;
 }
+.player1 {
+  grid-area: 3 / 2;
+} 
+ .player2 {
+  grid-area: 2 / -2;
+} 
+ .player3 {
+  grid-area: 1 / 2;
+  
+}
+.player4 {
+  grid-area: 2;
+} 
+
+.player1.active, .player2.active, .player3.active, .player4.active {
+  font-size: xx-large;
+}
+
 .player-details {
   font-size: medium;
   display: flex;
+  flex-direction: column;
   width: 100%;
   justify-content: space-evenly;
+}
+.player-details .buttons {
+  font-size: x-small;
+  display: flex;
+  justify-content: space-between;
 }
 
 .cards {
@@ -94,6 +121,7 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .burnt-cont {

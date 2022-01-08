@@ -17,16 +17,25 @@ const Player = ({ card, player, getCardFace, cardBack, flipped, setFlipped, smal
                 <p>{JSON.stringify(player.stack)}</p>
                 {player.active && (
                     <>
+                        <button onClick={() => setBetAmount(betAmount + smallBlind)}>Bet +</button>
+                        <button onClick={() => {
+                            if (betAmount > 0) {
+                                setBetAmount(betAmount - smallBlind)
+                            }
+                        }
+                        }>Bet -</button>
                         <form className="buttons" onSubmit={(e) => {
                             e.preventDefault();
-                            dispatch({ type: 'submit-bet', betAmount });
+                            dispatch({ type: 'submit-bet', betAmount, player });
                             setBetAmount(0)
+                            console.log(betAmount, player)
                         }}>
-                            <button onClick={() => setBetAmount(betAmount + smallBlind)}>Bet +</button>
-                            <button onClick={() => setBetAmount(betAmount - smallBlind)}>Bet -</button>
                             <button type='submit'>OK</button>
                         </form>
-                        <div>{betAmount}</div>
+
+                        <div>BetAmount: {betAmount}</div>
+                        <div> Bet: {player.bet}</div>
+                        <div> Stack: {player.stack}</div>
                     </>
                 )
                 }

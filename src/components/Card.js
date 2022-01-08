@@ -1,5 +1,4 @@
 import '../Card.css'
-import { useState } from 'react'
 
 const Card = ({ card, getCardFace, cardBack, flipped, setFlipped }) => {
 

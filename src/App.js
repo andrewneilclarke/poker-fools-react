@@ -5,6 +5,7 @@ import Card from './components/Card';
 import Player from './components/Player';
 import { Deck, shuffle } from './Deck'
 import { gameStage } from './GameStages';
+import TestPlayer from './components/TestPlayer';
 
 const cardNames = Object.keys(Deck).slice(0, 52)
 const cardFaces = Object.values(Deck).slice(0, 52)
@@ -16,7 +17,6 @@ const initialState = {
   player2: { cards: [], stack: 300, bet: 0, name: 'player2', dealer: false },
   player3: { cards: [], stack: 300, bet: 0, name: 'player3', dealer: false, bigBlind: true },
   player4: { cards: [], stack: 300, bet: 0, name: 'player4', dealer: false, smallBlind: true, active: true }
-
 }
 
 function App() {
@@ -144,12 +144,14 @@ function App() {
 
   return (
     <div className="App">
+      <p>{JSON.stringify({ player1, player2, player3, player4 })}</p>
       <div className='deck-container'>
-        {liveDeck.map(card =>
+
+        {/* {liveDeck.map(card =>
         (<div id="deck">
           <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
         </div>)
-        )}
+        )} */}
         <div className="burnt">
           <p id="burnt">Burnt: </p>
           <div className="burnt-cont">
@@ -160,7 +162,7 @@ function App() {
           </div>
         </div>
       </div>
-
+      <TestPlayer />
       <div className="buttons">
         <button onClick={shuffleandSet}>Shuffle</button>
         <button onClick={() => dealFlop(liveDeck, table, player1, player2)}>Deal Flop</button>

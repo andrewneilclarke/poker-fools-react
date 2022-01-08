@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import Card from "./Card"
 
-const Player = ({ card, player, getCardFace, cardBack, flipped, setFlipped, smallBlind, dispatch }) => {
+const Player = ({ card, player, getCardFace, cardBack, flipped, setFlipped, smallBlind, dispatch, makeActive }) => {
     const [betAmount, setBetAmount] = useState(0)
     return (
-        <div className={player.name}>
+        <div className={player.name} onClick={() => dispatch({ type: 'make-active', player })}>
             <p>{player.name.toUpperCase()} {player.dealer && 'D'} {player.bigBlind && 'BB'} {player.smallBlind && 'SB'}</p>
             <div className="cards">
                 {player.cards.map(card => (

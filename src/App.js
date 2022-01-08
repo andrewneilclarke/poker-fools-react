@@ -5,7 +5,6 @@ import Card from './components/Card';
 import Player from './components/Player';
 import { Deck, shuffle } from './Deck'
 import { gameStage } from './GameStages';
-import TestPlayer from './components/TestPlayer';
 
 const cardNames = Object.keys(Deck).slice(0, 52)
 const cardFaces = Object.values(Deck).slice(0, 52)
@@ -13,9 +12,9 @@ const cardBack = Object.values(Deck)[52]
 let liveDeck = [...cardNames]
 
 const initialState = {
-  player1: { cards: [], stack: 300, bet: 0, name: 'player1', dealer: true },
-  player2: { cards: [], stack: 300, bet: 0, name: 'player2', dealer: false },
-  player3: { cards: [], stack: 300, bet: 0, name: 'player3', dealer: false, bigBlind: true },
+  player1: { cards: [], stack: 300, bet: 0, name: 'player1', dealer: true, active: false },
+  player2: { cards: [], stack: 300, bet: 0, name: 'player2', dealer: false, active: false },
+  player3: { cards: [], stack: 300, bet: 0, name: 'player3', dealer: false, bigBlind: true, active: false },
   player4: { cards: [], stack: 300, bet: 0, name: 'player4', dealer: false, smallBlind: true, active: true }
 }
 
@@ -33,6 +32,7 @@ function App() {
   const [bigBlind, setBigBlind] = useState(20)
   const [table, setTable] = useState([])
   const [burnt, setBurnt] = useState([])
+  const [pot, setPot] = useState(0)
   const [gameOver, setGameOver] = useState(null)
   let [liveDeck, setLiveDeck] = useState([...cardNames])
   const [flipped, setFlipped] = useState(true)
@@ -130,39 +130,32 @@ function App() {
     // shuffleandSet()
   }
 
-  const incrementBet = (player) => {
-    const newPlayer = { ...player, bet: smallBlind };
-    `set${player.name}`(newPlayer);
-    // console.log(player)
 
-    // const newPlayer = { ...player, bet: newBet }
-    // console.log(newPlayer)
-    // const playername = player.name[0].toUpperCase() + player.name.substring(1)
-    // const stateChange = `set${playername}`
-    // stateChange(newPlayer)
+  const makeActive = (name) => {
+    console.log(name)
   }
 
   return (
     <div className="App">
-      <p>{JSON.stringify({ player1, player2, player3, player4 })}</p>
+      {/* <p>{JSON.stringify({ player1, player2, player3, player4 })}</p> */}
       <div className='deck-container'>
 
-        {/* {liveDeck.map(card =>
+        {liveDeck.map(card =>
         (<div id="deck">
           <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
         </div>)
-        )} */}
+        )}
         <div className="burnt">
           <p id="burnt">Burnt: </p>
           <div className="burnt-cont">
             {burnt.map(card =>
-            (<div id="deck">
+            (<div id="deck" key={card}>
               <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
             </div>))}
           </div>
         </div>
       </div>
-      <TestPlayer />
+
       <div className="buttons">
         <button onClick={shuffleandSet}>Shuffle</button>
         <button onClick={() => dealFlop(liveDeck, table, player1, player2)}>Deal Flop</button>
@@ -185,7 +178,7 @@ function App() {
 
         <div className="players">
           {players.map(player => (
-            <Player key={player.name} player={player} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} smallBlind={smallBlind} dispatch={dispatch} />
+            <Player key={player.name} player={player} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} smallBlind={smallBlind} dispatch={dispatch} makeActive={makeActive} />
 
           ))}
         </div>

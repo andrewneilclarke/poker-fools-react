@@ -19,21 +19,15 @@ const initialState = {
 }
 
 function App() {
-  const [cards, setCards] = useState([])
-  // const [player1, setplayer1] = useState({ cards: [], stack: 300, bet: 0, name: 'player1', dealer: true })
-  // const [player2, setplayer2] = useState({ cards: [], stack: 300, bet: 0, name: 'player2', dealer: false })
-  // const [player3, setplayer3] = useState({ cards: [], stack: 300, bet: 0, name: 'player3', dealer: false, bigBlind: true })
-  // const [player4, setplayer4] = useState({ cards: [], stack: 300, bet: 0, name: 'player4', dealer: false, smallBlind: true, active: true })
-
   const [{ player1, player2, player3, player4 }, dispatch] = useReducer(betReducer, initialState)
-  // const [player1, player2, player3, player4] = state;
 
   const players = [player1, player2, player3, player4]
   const [bigBlind, setBigBlind] = useState(20)
   const [table, setTable] = useState([])
   const [burnt, setBurnt] = useState([])
-  const [pot, setPot] = useState(0)
+  // const [pot, setPot] = useState(0)
   const [gameOver, setGameOver] = useState(null)
+  const [currentGameStage, setCurrentGameStage] = useState(gameStage[0])
   let [liveDeck, setLiveDeck] = useState([...cardNames])
   const [flipped, setFlipped] = useState(true)
   const [gameResult, setGameResult] = useState({
@@ -41,8 +35,6 @@ function App() {
     players: [],
   });
   const smallBlind = bigBlind / 2
-
-  const currentGameStage = gameStage[0]
 
   const getCardFace = (card) => Deck[card]
 
@@ -59,6 +51,7 @@ function App() {
   }
 
   const dealFlop = (deck, table, player1, player2) => {
+    setCurrentGameStage(gameStage[1])
     player1.cards.push(liveDeck.pop())
     player2.cards.push(liveDeck.pop())
     player3.cards.push(liveDeck.pop())
@@ -76,6 +69,7 @@ function App() {
   }
 
   const dealTurn = (deck, table, burnt, player1, player2) => {
+    setCurrentGameStage(gameStage[2])
     burnt.push(liveDeck.pop())
     table.push(liveDeck.pop())
     setLiveDeck([...liveDeck])
@@ -84,6 +78,7 @@ function App() {
   }
 
   const dealRiver = (deck, table, burnt, player1, player2) => {
+    setCurrentGameStage(gameStage[3])
     burnt.push(liveDeck.pop())
     table.push(liveDeck.pop())
     setLiveDeck([...liveDeck])
@@ -122,6 +117,7 @@ function App() {
   const nextGame = () => {
     setTable([])
     setBurnt([])
+    setCurrentGameStage(gameStage[0])
     // setplayer1({ ...player1, cards: [] })
     // setplayer2({ ...player2, cards: [] })
     // setplayer3({ ...player3, cards: [] })

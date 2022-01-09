@@ -126,6 +126,9 @@ button:hover {
   align-items: center;
   position: relative;
 }
+.buttons .stage-change button {
+  background-color: green;
+}
 
 .burnt-cont {
   display: flex;
@@ -137,4 +140,8 @@ button:hover {
   align-items: center;
   font-size: 20px;
   margin-left: 20px;
+}
+
+.pot {
+  font-size: large;
 }

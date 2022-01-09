@@ -15,11 +15,12 @@ const initialState = {
   player1: { cards: [], stack: 300, bet: 0, name: 'player1', dealer: true, active: false },
   player2: { cards: [], stack: 300, bet: 0, name: 'player2', dealer: false, active: false },
   player3: { cards: [], stack: 300, bet: 0, name: 'player3', dealer: false, bigBlind: true, active: false },
-  player4: { cards: [], stack: 300, bet: 0, name: 'player4', dealer: false, smallBlind: true, active: true }
+  player4: { cards: [], stack: 300, bet: 0, name: 'player4', dealer: false, smallBlind: true, active: true },
+  pot: 0
 }
 
 function App() {
-  const [{ player1, player2, player3, player4 }, dispatch] = useReducer(betReducer, initialState)
+  const [{ player1, player2, player3, player4, pot }, dispatch] = useReducer(betReducer, initialState)
   const players = [player1, player2, player3, player4]
   const [bigBlind, setBigBlind] = useState(20)
   const [table, setTable] = useState([])
@@ -29,7 +30,7 @@ function App() {
   const [gameOver, setGameOver] = useState(null)
   const [currentGameStage, setCurrentGameStage] = useState(gameStage[0])
   let [liveDeck, setLiveDeck] = useState([...cardNames])
-  const [flipped, setFlipped] = useState(true)
+  const [flipped, setFlipped] = useState(false)
   const [gameResult, setGameResult] = useState({
     winners: [],
     players: [],
@@ -118,12 +119,7 @@ function App() {
     setTable([])
     setBurnt([])
     setCurrentGameStage(gameStage[0])
-    // TO DO - SETUP ACTION TO RESET PLAYER CARDS 
-    // dispatch()
-    // setplayer1({ ...player1, cards: [] })
-    // setplayer2({ ...player2, cards: [] })
-    // setplayer3({ ...player3, cards: [] })
-    // setplayer4({ ...player4, cards: [] })
+    dispatch({ type: 'reset-player-cards' })
     setLiveDeck([...cardNames])
     // shuffleandSet()
   }
@@ -157,10 +153,12 @@ function App() {
 
       {/* CONTROL BUTTONS */}
       <div className="buttons">
-        <button onClick={shuffleandSet}>Shuffle</button>
-        {currentGameStage === gameStage[0] && <button onClick={() => dealFlop(liveDeck, table, player1, player2)}>Deal Flop</button>}
-        {currentGameStage === gameStage[1] && <button onClick={() => dealTurn(liveDeck, table, burnt, player1, player2)}>Deal Turn</button>}
-        {currentGameStage === gameStage[2] && <button onClick={() => dealRiver(liveDeck, table, burnt, player1, player2)}>Deal River</button>}
+        {currentGameStage === gameStage[0] && <button onClick={shuffleandSet}>Shuffle</button>}
+        <div className="stage-change">
+          {currentGameStage === gameStage[0] && <button onClick={() => dealFlop(liveDeck, table, player1, player2)}>Deal Flop</button>}
+          {currentGameStage === gameStage[1] && <button onClick={() => dealTurn(liveDeck, table, burnt, player1, player2)}>Deal Turn</button>}
+          {currentGameStage === gameStage[2] && <button onClick={() => dealRiver(liveDeck, table, burnt, player1, player2)}>Deal River</button>}
+        </div>
         <button onClick={nextGame}>Next Game / Reset Cards</button>
         {/* <button onClick={fetchRankingResult}>Result</button> */}
       </div>
@@ -185,6 +183,8 @@ function App() {
           ))}
         </div>
       </div>
+
+      <p className="pot">Pot: {pot}</p>
       {gameResult && <p>{JSON.stringify(gameResult)}</p>}
     </div>
 

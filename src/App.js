@@ -20,12 +20,12 @@ const initialState = {
 
 function App() {
   const [{ player1, player2, player3, player4 }, dispatch] = useReducer(betReducer, initialState)
-
   const players = [player1, player2, player3, player4]
   const [bigBlind, setBigBlind] = useState(20)
   const [table, setTable] = useState([])
   const [burnt, setBurnt] = useState([])
   // const [pot, setPot] = useState(0)
+  const [displayDeck, setDisplayDeck] = useState(false)
   const [gameOver, setGameOver] = useState(null)
   const [currentGameStage, setCurrentGameStage] = useState(gameStage[0])
   let [liveDeck, setLiveDeck] = useState([...cardNames])
@@ -118,6 +118,8 @@ function App() {
     setTable([])
     setBurnt([])
     setCurrentGameStage(gameStage[0])
+    // TO DO - SETUP ACTION TO RESET PLAYER CARDS 
+    // dispatch()
     // setplayer1({ ...player1, cards: [] })
     // setplayer2({ ...player2, cards: [] })
     // setplayer3({ ...player3, cards: [] })
@@ -126,40 +128,44 @@ function App() {
     // shuffleandSet()
   }
 
-
-  const makeActive = (name) => {
-    console.log(name)
-  }
-
   return (
     <div className="App">
+      {/* DISPLAY PLAYERS */}
       {/* <p>{JSON.stringify({ player1, player2, player3, player4 })}</p> */}
+
       <div className='deck-container'>
 
-        {liveDeck.map(card =>
+        {/* DISPLAY DECK */}
+        <button onClick={() => setDisplayDeck(!displayDeck)}>Display Deck</button>
+        {displayDeck && liveDeck.map(card =>
         (<div id="deck">
           <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
         </div>)
         )}
-        <div className="burnt">
-          <p id="burnt">Burnt: </p>
-          <div className="burnt-cont">
-            {burnt.map(card =>
-            (<div id="deck" key={card}>
-              <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
-            </div>))}
+        {displayDeck &&
+          <div className="burnt">
+            <p id="burnt">Burnt: </p>
+            <div className="burnt-cont">
+              {burnt.map(card =>
+              (<div id="deck" key={card}>
+                <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
+              </div>))}
+            </div>
           </div>
-        </div>
+        }
       </div>
 
+      {/* CONTROL BUTTONS */}
       <div className="buttons">
         <button onClick={shuffleandSet}>Shuffle</button>
-        <button onClick={() => dealFlop(liveDeck, table, player1, player2)}>Deal Flop</button>
-        <button onClick={() => dealTurn(liveDeck, table, burnt, player1, player2)}>Deal Turn</button>
-        <button onClick={() => dealRiver(liveDeck, table, burnt, player1, player2)}>Deal River</button>
-        <button onClick={nextGame}>Next Game</button>
+        {currentGameStage === gameStage[0] && <button onClick={() => dealFlop(liveDeck, table, player1, player2)}>Deal Flop</button>}
+        {currentGameStage === gameStage[1] && <button onClick={() => dealTurn(liveDeck, table, burnt, player1, player2)}>Deal Turn</button>}
+        {currentGameStage === gameStage[2] && <button onClick={() => dealRiver(liveDeck, table, burnt, player1, player2)}>Deal River</button>}
+        <button onClick={nextGame}>Next Game / Reset Cards</button>
         {/* <button onClick={fetchRankingResult}>Result</button> */}
       </div>
+
+      {/* DISPLAY TABLE AND PLAYERS */}
       <div className="table-and-players">
         <div className="game-info">
           {currentGameStage}
@@ -174,7 +180,7 @@ function App() {
 
         <div className="players">
           {players.map(player => (
-            <Player key={player.name} player={player} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} smallBlind={smallBlind} dispatch={dispatch} makeActive={makeActive} />
+            <Player key={player.name} player={player} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} smallBlind={smallBlind} dispatch={dispatch} />
 
           ))}
         </div>

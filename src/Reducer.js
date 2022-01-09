@@ -102,7 +102,9 @@ export const betReducer = (state, action) => {
                         ...state.player3, active: false
                     },
                 }
+
             }
+            break;
         }
 
 

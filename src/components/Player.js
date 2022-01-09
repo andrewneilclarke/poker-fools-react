@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Card from "./Card"
 
-const Player = ({ card, player, getCardFace, cardBack, flipped, setFlipped, smallBlind, dispatch, makeActive }) => {
+const Player = ({ card, player, getCardFace, cardBack, flipped, setFlipped, smallBlind, dispatch }) => {
     const [betAmount, setBetAmount] = useState(0)
     return (
         <div className={player.name} onClick={() => dispatch({ type: 'make-active', player })}>

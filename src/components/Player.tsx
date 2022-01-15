@@ -7,13 +7,13 @@ const Player = ({ card, player, getCardFace, cardBack, flipped, setFlipped, smal
         <div className={player.name} onClick={() => dispatch({ type: 'make-active', player })}>
             <p>{player.name.toUpperCase()} {player.dealer && 'D'} {player.bigBlind && 'BB'} {player.smallBlind && 'SB'}</p>
             <div className="cards">
-                {player.cards.map(card => (
+                {player.hand.map(card => (
                     <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />))
                 }
             </div>
 
             <div className="player-details">
-                <p>{JSON.stringify(player.cards)}</p>
+                <p>{JSON.stringify(player.hand)}</p>
                 <p>{JSON.stringify(player.stack)}</p>
                 {player.active && (
                     <>

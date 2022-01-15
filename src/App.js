@@ -12,10 +12,10 @@ const cardBack = Object.values(Deck)[52]
 let liveDeck = [...cardNames]
 
 const initialState = {
-  player1: { cards: [], stack: 300, bet: 0, name: 'player1', dealer: true, active: false },
-  player2: { cards: [], stack: 300, bet: 0, name: 'player2', dealer: false, active: false },
-  player3: { cards: [], stack: 300, bet: 0, name: 'player3', dealer: false, bigBlind: true, active: false },
-  player4: { cards: [], stack: 300, bet: 0, name: 'player4', dealer: false, smallBlind: true, active: true },
+  player1: { hand: [], stack: 300, bet: 0, name: 'player1', dealer: true, active: false },
+  player2: { hand: [], stack: 300, bet: 0, name: 'player2', dealer: false, active: false },
+  player3: { hand: [], stack: 300, bet: 0, name: 'player3', dealer: false, bigBlind: true, active: false },
+  player4: { hand: [], stack: 300, bet: 0, name: 'player4', dealer: false, smallBlind: true, active: true },
   pot: 0
 }
 
@@ -53,14 +53,14 @@ function App() {
 
   const dealFlop = (deck, table, player1, player2) => {
     setCurrentGameStage(gameStage[1])
-    player1.cards.push(liveDeck.pop())
-    player2.cards.push(liveDeck.pop())
-    player3.cards.push(liveDeck.pop())
-    player4.cards.push(liveDeck.pop())
-    player1.cards.push(liveDeck.pop())
-    player2.cards.push(liveDeck.pop())
-    player3.cards.push(liveDeck.pop())
-    player4.cards.push(liveDeck.pop())
+    player1.hand.push(liveDeck.pop())
+    player2.hand.push(liveDeck.pop())
+    player3.hand.push(liveDeck.pop())
+    player4.hand.push(liveDeck.pop())
+    player1.hand.push(liveDeck.pop())
+    player2.hand.push(liveDeck.pop())
+    player3.hand.push(liveDeck.pop())
+    player4.hand.push(liveDeck.pop())
     table.push(liveDeck.pop())
     table.push(liveDeck.pop())
     table.push(liveDeck.pop())
@@ -97,7 +97,7 @@ function App() {
     // const finaltable = table.join(',')
     // console.log(table)
     // let players = [player1, player2, player3, player4]
-    // players = [players.map((p) => `&pc[]=${p.cards.join(',')}`).join('')]
+    // players = [players.map((p) => `&pc[]=${p.hand.join(',')}`).join('')]
     // console.log('table: ', table, 'players', players)
 
     // const table = game.table.join(',');
@@ -113,7 +113,7 @@ function App() {
     // return res.json();
   };
 
-  // const equalHand = (p: Player) => (r: Result) => r.cards === p.hand.join(',');
+  // const equalHand = (p: Player) => (r: Result) => r.hand === p.hand.join(',');
 
   const nextGame = () => {
     setTable([])

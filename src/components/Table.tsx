@@ -1,8 +1,6 @@
 const Table = ({ table }) => {
     return (
-        <div>
-            {table.map(card)}
-        </div>
+        null
     )
 }
 

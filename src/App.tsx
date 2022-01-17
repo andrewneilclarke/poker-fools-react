@@ -5,28 +5,27 @@ import Card from './components/Card';
 import Player from './components/Player';
 import { Deck, shuffle } from './Deck'
 import { gameStage } from './GameStages';
+import { CardType, PlayerType, AppState } from './Interfaces'
 
 const cardNames = Object.keys(Deck).slice(0, 52)
-const cardFaces = Object.values(Deck).slice(0, 52)
+// const cardFaces = Object.values(Deck).slice(0, 52)
 const cardBack = Object.values(Deck)[52]
-let liveDeck = [...cardNames]
 
-const initialState = {
-  player1: { hand: [], stack: 300, bet: 0, name: 'player1', dealer: true, active: false },
-  player2: { hand: [], stack: 300, bet: 0, name: 'player2', dealer: false, active: false },
-  player3: { hand: [], stack: 300, bet: 0, name: 'player3', dealer: false, bigBlind: true, active: false },
-  player4: { hand: [], stack: 300, bet: 0, name: 'player4', dealer: false, smallBlind: true, active: true },
+const initialState: AppState = {
+  player1: { hand: [], stack: 300, bet: 0, name: 'player1', dealer: true, bigBlind: false, smallBlind: false, active: false },
+  player2: { hand: [], stack: 300, bet: 0, name: 'player2', dealer: false, bigBlind: false, smallBlind: false, active: false },
+  player3: { hand: [], stack: 300, bet: 0, name: 'player3', dealer: false, bigBlind: true, smallBlind: false, active: false },
+  player4: { hand: [], stack: 300, bet: 0, name: 'player4', dealer: false, bigBlind: false, smallBlind: true, active: true },
   pot: 0
 }
 
 function App() {
   const [{ player1, player2, player3, player4, pot }, dispatch] = useReducer(betReducer, initialState)
-  const players = [player1, player2, player3, player4]
+  const players: PlayerType[] = [player1, player2, player3, player4]
   const [bigBlind, setBigBlind] = useState(20)
-  const [table, setTable] = useState([])
-  const [burnt, setBurnt] = useState([])
-  // const [pot, setPot] = useState(0)
-  const [displayDeck, setDisplayDeck] = useState(false)
+  const [table, setTable] = useState<CardType[]>([])
+  const [burnt, setBurnt] = useState<CardType[]>([])
+  const [displayDeck, setDisplayDeck] = useState<boolean>(false)
   const [gameOver, setGameOver] = useState(null)
   const [currentGameStage, setCurrentGameStage] = useState(gameStage[0])
   let [liveDeck, setLiveDeck] = useState([...cardNames])
@@ -37,7 +36,7 @@ function App() {
   });
   const smallBlind = bigBlind / 2
 
-  const getCardFace = (card) => Deck[card]
+  const getCardFace = (card: CardType): string => Deck[card]
 
   useEffect(() => {
     // shuffle(liveDeck);
@@ -66,7 +65,7 @@ function App() {
     table.push(liveDeck.pop())
     setLiveDeck([...liveDeck])
     setGameOver(false)
-    return liveDeck, player1, player2, player3, player4
+    return { liveDeck, player1, player2, player3, player4 }
   }
 
   const dealTurn = (deck, table, burnt, player1, player2) => {
@@ -75,7 +74,7 @@ function App() {
     table.push(liveDeck.pop())
     setLiveDeck([...liveDeck])
     setGameOver(false)
-    return liveDeck, player1, player2, player3, player4, burnt
+    return { liveDeck, player1, player2, player3, player4, burnt }
   }
 
   const dealRiver = (deck, table, burnt, player1, player2) => {
@@ -84,7 +83,7 @@ function App() {
     table.push(liveDeck.pop())
     setLiveDeck([...liveDeck])
     setGameOver(false)
-    return liveDeck, player1, player2, player3, player4, burnt
+    return { liveDeck, player1, player2, player3, player4, burnt }
   }
 
   const getResult = async () => {

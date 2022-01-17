@@ -1,11 +1,11 @@
 import '../Card.css'
 import { useState } from 'react'
 
-const Card = ({ card, getCardFace, cardBack, flipped, setFlipped }) => {
+const Card = (card: string, getCardFace: any, cardBack: any, flipped: boolean, setFlipped: any) => {
     const [isFlipped, setIsFlipped] = useState(flipped)
 
     // helper funtion to check card colour
-    const checkColour = (card) => {
+    const checkColour = (card: string) => {
         const cardArr = card.toLowerCase().split('')
         const hasRed = cardArr.filter(item =>
             item === 'h' || item === 'd'
@@ -13,7 +13,7 @@ const Card = ({ card, getCardFace, cardBack, flipped, setFlipped }) => {
         return hasRed.length > 0
     }
 
-    const flipCard = (card) => {
+    const flipCard = (card: string) => {
         setIsFlipped(!isFlipped)
     }
     // const flipCard = (card) => {

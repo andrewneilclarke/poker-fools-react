@@ -1,4 +1,4 @@
-export type Card =
+export type CardType =
     '2H'
     | '3H'
     | '4H'
@@ -56,21 +56,39 @@ export type Hand = Array<Card>;
 
 export type Table = Array<Card>;
 
-export interface Player {
-    name: string;
-    stack: number;
-    bet: number;
-    hand: Hand;
-    evaluatedHand?: {
-        handName: string;
-        handRank: number;
-        handType: number;
-        value: number;
-    };
-    dealer: boolean;
-    active: boolean;
+// export interface Player {
+//     name: string;
+//     stack: number;
+//     bet: number;
+//     hand: Hand;
+//     evaluatedHand?: {
+//         handName: string;
+//         handRank: number;
+//         handType: number;
+//         value: number;
+//     };
+//     dealer: boolean;
+//     active: boolean;
+// }
+
+export interface PlayerType {
+    hand: string[],
+    stack: number,
+    bet: number,
+    name: string,
+    dealer: boolean,
+    active: boolean,
+    bigBlind: boolean,
+    smallBlind: boolean
 }
 
+export interface AppState {
+    player1: PlayerType,
+    player2: PlayerType,
+    player3: PlayerType,
+    player4: PlayerType,
+    pot: number
+}
 
 interface Game {
     table: Table;

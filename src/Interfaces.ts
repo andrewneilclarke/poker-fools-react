@@ -50,11 +50,12 @@ export type CardType =
     | 'JS'
     | 'QS'
     | 'KS'
-    | 'AS';
+    | 'AS'
+    | 'BACK';
 
-export type Hand = Array<Card>;
+export type Hand = Array<CardType>;
 
-export type Table = Array<Card>;
+export type Table = Array<CardType>;
 
 // export interface Player {
 //     name: string;
@@ -92,7 +93,7 @@ export interface AppState {
 
 interface Game {
     table: Table;
-    players: Array<Player>;
+    players: Array<PlayerType>;
     pot?: number;
 }
 

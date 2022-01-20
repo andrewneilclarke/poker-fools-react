@@ -1,7 +1,16 @@
 import '../Card.css'
 import { useState } from 'react'
+import { CardType } from '../Interfaces'
 
-const Card = (card: string, getCardFace: any, cardBack: any, flipped: boolean, setFlipped: any) => {
+interface Props {
+    card: string,
+    getCardFace: (card: string) => CardType,
+    cardBack: string,
+    flipped: boolean,
+    setFlipped: any,
+}
+
+const Card: React.FC<Props> = ({ card, getCardFace, cardBack, flipped, setFlipped }) => {
     const [isFlipped, setIsFlipped] = useState(flipped)
 
     // helper funtion to check card colour

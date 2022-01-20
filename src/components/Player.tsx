@@ -1,8 +1,20 @@
 import { useState } from 'react'
+import { CardType, PlayerType } from '../Interfaces'
 import Card from "./Card"
 
-const Player = (getCardFace: any, cardBack: any, flipped: boolean, setFlipped: boolean, player: any, smallBlind: number, dispatch: any) => {
+interface Props {
+    player: PlayerType,
+    getCardFace: (card: CardType) => CardType,
+    cardBack: string,
+    flipped: boolean,
+    setFlipped: any,
+    dispatch: React.Dispatch<any>,
+    smallBlind: number
+}
+
+const Player: React.FC<Props> = ({ player, getCardFace, cardBack, flipped, setFlipped, dispatch, smallBlind }) => {
     const [betAmount, setBetAmount] = useState(0)
+
     return (
         <div className={player.name} onClick={() => dispatch({ type: 'make-active', player })}>
             <p>{player.name.toUpperCase()} {player.dealer && 'D'} {player.bigBlind && 'BB'} {player.smallBlind && 'SB'}</p>

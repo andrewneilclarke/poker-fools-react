@@ -1,4 +1,5 @@
 import { useState, useEffect, useReducer } from 'react';
+import { v4 as uuid } from 'uuid';
 import { betReducer } from './Reducer';
 import './App.css';
 import Card from './components/Card';
@@ -19,24 +20,24 @@ const initialState: AppState = {
   pot: 0
 }
 
-function App() {
+const App = () => {
   const [{ player1, player2, player3, player4, pot }, dispatch] = useReducer(betReducer, initialState)
   const players: PlayerType[] = [player1, player2, player3, player4]
   const [bigBlind, setBigBlind] = useState(20)
   const [table, setTable] = useState<CardType[]>([])
   const [burnt, setBurnt] = useState<CardType[]>([])
-  const [displayDeck, setDisplayDeck] = useState<boolean>(false)
+  const [displayDeck, setDisplayDeck] = useState<boolean>(true)
   const [gameOver, setGameOver] = useState(null)
   const [currentGameStage, setCurrentGameStage] = useState(gameStage[0])
   let [liveDeck, setLiveDeck] = useState([...cardNames])
-  const [flipped, setFlipped] = useState(false)
+  const [flipped, setFlipped] = useState(true)
   const [gameResult, setGameResult] = useState({
     winners: [],
     players: [],
   });
   const smallBlind = bigBlind / 2
 
-  const getCardFace = (card: CardType): string => Deck[card]
+  const getCardFace = (card) => Deck[card]
 
   useEffect(() => {
     // shuffle(liveDeck);
@@ -120,7 +121,7 @@ function App() {
     setCurrentGameStage(gameStage[0])
     dispatch({ type: 'reset-player-cards' })
     setLiveDeck([...cardNames])
-    // shuffleandSet()
+    shuffleandSet()
   }
 
   return (
@@ -133,7 +134,7 @@ function App() {
         {/* DISPLAY DECK */}
         <button onClick={() => setDisplayDeck(!displayDeck)}>Display Deck</button>
         {displayDeck && liveDeck.map(card =>
-        (<div id="deck">
+        (<div id="deck" key={uuid()}>
           <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
         </div>)
         )}
@@ -142,8 +143,8 @@ function App() {
             <p id="burnt">Burnt: </p>
             <div className="burnt-cont">
               {burnt.map(card =>
-              (<div id="deck" key={card}>
-                <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
+              (<div id="deck" key={uuid()}>
+                <Card key={uuid()} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
               </div>))}
             </div>
           </div>
@@ -170,15 +171,14 @@ function App() {
         </div>
         <div className="table">
           {!gameOver && table.map(card => (
-            <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
+            <Card key={uuid()} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
           ))}
           <p>Poker Fools</p>
         </div>
 
         <div className="players">
-          {players.map(player => (
+          {players && players.map(player => (
             <Player key={player.name} player={player} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} smallBlind={smallBlind} dispatch={dispatch} />
-
           ))}
         </div>
       </div>

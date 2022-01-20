@@ -132,6 +132,5 @@ export const betReducer = (state, action) => {
 
     }
 
-
     return state
 }

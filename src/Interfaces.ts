@@ -57,6 +57,13 @@ export type Hand = Array<CardType>;
 
 export type Table = Array<CardType>;
 
+export enum Gamestage {
+    'pre-flop',
+    'flop',
+    'turn',
+    'river'
+}
+
 // export interface Player {
 //     name: string;
 //     stack: number;

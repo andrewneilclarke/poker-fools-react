@@ -111,10 +111,9 @@ button:hover {
 
 .table-and-players {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  flex-direction: row;
-  width: 90vw;
+  width: 100%;
 }
 .table-and-players .card {
   font-size: 110px;

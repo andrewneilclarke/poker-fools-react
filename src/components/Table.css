@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
+
+
+.table-container {
+    margin: 10px;
+    height: 96vh;
+    width: 98vw;
+    border-radius: 50%;
+    background-color: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    color: rgb(198, 196, 196);
+    position: fixed;
+    z-index: -1;
+}
+.table-and-players .table
+{   
+    
+}
+
+.table-and-players .table p {
+    font-family: 'Sacramento', cursive;
+    color: #444;
+   
+    
+}

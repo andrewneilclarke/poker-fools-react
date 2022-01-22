@@ -113,10 +113,10 @@ export const betReducer = (state, action) => {
         case 'reset-player-cards': {
             return {
                 ...state,
-                player1: { ...state.player1, cards: [] },
-                player2: { ...state.player2, cards: [] },
-                player3: { ...state.player3, cards: [] },
-                player4: { ...state.player4, cards: [] },
+                player1: { ...state.player1, hand: [] },
+                player2: { ...state.player2, hand: [] },
+                player3: { ...state.player3, hand: [] },
+                player4: { ...state.player4, hand: [] },
             }
         }
 

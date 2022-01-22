@@ -3,10 +3,11 @@ import { v4 as uuid } from 'uuid';
 import { betReducer } from './Reducer';
 import './App.css';
 import Card from './components/Card';
-import Player from './components/Player';
+// import Player from './components/Player';
+import Gameinfo from './components/Gameinfo';
 import { Deck, shuffle } from './Deck'
-import { gameStage } from './GameStages';
-import { CardType, PlayerType, AppState } from './Interfaces'
+import { CardType, PlayerType, AppState, Gamestage } from './Interfaces'
+import Table from './components/Table';
 
 const cardNames = Object.keys(Deck).slice(0, 52)
 // const cardFaces = Object.values(Deck).slice(0, 52)
@@ -20,15 +21,16 @@ const initialState: AppState = {
   pot: 0
 }
 
+
 const App = () => {
   const [{ player1, player2, player3, player4, pot }, dispatch] = useReducer(betReducer, initialState)
   const players: PlayerType[] = [player1, player2, player3, player4]
   const [bigBlind, setBigBlind] = useState(20)
   const [table, setTable] = useState<CardType[]>([])
   const [burnt, setBurnt] = useState<CardType[]>([])
-  const [displayDeck, setDisplayDeck] = useState<boolean>(true)
+  const [displayDeck, setDisplayDeck] = useState<boolean>(false)
   const [gameOver, setGameOver] = useState(null)
-  const [currentGameStage, setCurrentGameStage] = useState(gameStage[0])
+  const [currentGameStage, setCurrentGameStage] = useState<string>(Gamestage[0])
   let [liveDeck, setLiveDeck] = useState([...cardNames])
   const [flipped, setFlipped] = useState(true)
   const [gameResult, setGameResult] = useState({
@@ -52,7 +54,7 @@ const App = () => {
   }
 
   const dealFlop = (deck, table, player1, player2) => {
-    setCurrentGameStage(gameStage[1])
+    setCurrentGameStage(Gamestage[1])
     player1.hand.push(liveDeck.pop())
     player2.hand.push(liveDeck.pop())
     player3.hand.push(liveDeck.pop())
@@ -70,7 +72,7 @@ const App = () => {
   }
 
   const dealTurn = (deck, table, burnt, player1, player2) => {
-    setCurrentGameStage(gameStage[2])
+    setCurrentGameStage(Gamestage[2])
     burnt.push(liveDeck.pop())
     table.push(liveDeck.pop())
     setLiveDeck([...liveDeck])
@@ -79,7 +81,7 @@ const App = () => {
   }
 
   const dealRiver = (deck, table, burnt, player1, player2) => {
-    setCurrentGameStage(gameStage[3])
+    setCurrentGameStage(Gamestage[3])
     burnt.push(liveDeck.pop())
     table.push(liveDeck.pop())
     setLiveDeck([...liveDeck])
@@ -115,12 +117,16 @@ const App = () => {
 
   // const equalHand = (p: Player) => (r: Result) => r.hand === p.hand.join(',');
 
+  const refillDeck = () => {
+    liveDeck = [...cardNames]
+  }
+
   const nextGame = () => {
     setTable([])
     setBurnt([])
-    setCurrentGameStage(gameStage[0])
+    setCurrentGameStage(Gamestage[0])
     dispatch({ type: 'reset-player-cards' })
-    setLiveDeck([...cardNames])
+    refillDeck()
     shuffleandSet()
   }
 
@@ -132,7 +138,7 @@ const App = () => {
       <div className='deck-container'>
 
         {/* DISPLAY DECK */}
-        <button onClick={() => setDisplayDeck(!displayDeck)}>Display Deck</button>
+        <button onClick={() => setDisplayDeck(!displayDeck)}>{displayDeck ? 'Hide Deck' : 'Display Deck (Admin)'}</button>
         {displayDeck && liveDeck.map(card =>
         (<div id="deck" key={uuid()}>
           <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
@@ -153,38 +159,20 @@ const App = () => {
 
       {/* CONTROL BUTTONS */}
       <div className="buttons">
-        {currentGameStage === gameStage[0] && <button onClick={shuffleandSet}>Shuffle</button>}
+        {currentGameStage === Gamestage[0] && <button onClick={shuffleandSet}>Shuffle</button>}
         <div className="stage-change">
-          {currentGameStage === gameStage[0] && <button onClick={() => dealFlop(liveDeck, table, player1, player2)}>Deal Flop</button>}
-          {currentGameStage === gameStage[1] && <button onClick={() => dealTurn(liveDeck, table, burnt, player1, player2)}>Deal Turn</button>}
-          {currentGameStage === gameStage[2] && <button onClick={() => dealRiver(liveDeck, table, burnt, player1, player2)}>Deal River</button>}
+          {currentGameStage === Gamestage[0] && <button onClick={() => dealFlop(liveDeck, table, player1, player2)}>Deal Flop</button>}
+          {currentGameStage === Gamestage[1] && <button onClick={() => dealTurn(liveDeck, table, burnt, player1, player2)}>Deal Turn</button>}
+          {currentGameStage === Gamestage[2] && <button onClick={() => dealRiver(liveDeck, table, burnt, player1, player2)}>Deal River</button>}
         </div>
         <button onClick={nextGame}>Next Game / Reset Cards</button>
         {/* <button onClick={fetchRankingResult}>Result</button> */}
       </div>
 
       {/* DISPLAY TABLE AND PLAYERS */}
-      <div className="table-and-players">
-        <div className="game-info">
-          {currentGameStage}
-          <p>Blinds: {`${bigBlind} / ${smallBlind}`}</p>
-        </div>
-        <div className="table">
-          {!gameOver && table.map(card => (
-            <Card key={uuid()} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
-          ))}
-          <p>Poker Fools</p>
-        </div>
 
-        <div className="players">
-          {players && players.map(player => (
-            <Player key={player.name} player={player} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} smallBlind={smallBlind} dispatch={dispatch} />
-          ))}
-        </div>
-      </div>
-
-      <p className="pot">Pot: {pot}</p>
-      {gameResult && <p>{JSON.stringify(gameResult)}</p>}
+      <Table table={table} currentGameStage={currentGameStage} dispatch={dispatch} gameResult={gameResult} players={players} pot={pot} liveDeck={liveDeck} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} getCardFace={getCardFace} gameOver={gameOver} bigBlind={bigBlind} smallBlind={smallBlind} />
+      <Gameinfo bigBlind={bigBlind} currentGameStage={currentGameStage} pot={pot} smallBlind={smallBlind} />
     </div>
 
   );

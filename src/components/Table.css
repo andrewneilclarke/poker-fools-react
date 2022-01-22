@@ -3,14 +3,14 @@
 
 .table-container {
     margin: 10px;
-    height: 96vh;
-    width: 98vw;
-    border-radius: 50%;
-    background-color: green;
+    height: 88vh;
+    width: 88vw;
+    border: 25px solid rgb(50, 37, 23);
+    border-radius: 55%;
+    background-color: rgb(17, 148, 17);
     display: flex;
     justify-content: center;
     align-items: center;
-    
     color: rgb(198, 196, 196);
     position: fixed;
     z-index: -1;
@@ -22,7 +22,7 @@
 
 .table-and-players .table p {
     font-family: 'Sacramento', cursive;
-    color: #444;
+    color: #111;
    
     
 }

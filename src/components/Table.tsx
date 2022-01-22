@@ -30,11 +30,15 @@ const Table: React.FC<Props> = ({ table, players, pot, gameResult, dispatch, liv
     return (
         <div className="table-container">
             <div className="table-and-players">
+                <p className="pot">Pot: {pot}</p>
                 <div className="table">
+                    <div className="logo">
+                        <p>Poker</p>
+                        <p> Fools</p>
+                    </div>
                     {!gameOver && table.map(card => (
                         <Card key={uuid()} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
                     ))}
-                    <p>Poker Fools</p>
                 </div>
 
                 {/* <div className="players">
@@ -42,7 +46,7 @@ const Table: React.FC<Props> = ({ table, players, pot, gameResult, dispatch, liv
                         <Player key={player.name} player={player} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} smallBlind={smallBlind} dispatch={dispatch} />
                     ))}
                 </div> */}
-                <p className="pot">Pot: {pot}</p>
+
                 {gameResult && <p>{JSON.stringify(gameResult)}</p>}
             </div>
         </div>

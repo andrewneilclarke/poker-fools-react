@@ -13,13 +13,10 @@
   font-size: small;
 }
 
-.App h3 {
-  /* margin-bottom: .5em; */
-}
 button {
   background: hsl(283, 91%, 23%);
   border: 2px solid #fff;
-  padding: 6px 12px;
+  /* padding: 6px 12px; */
   border-radius: 9px;
   color: rgb(185, 184, 184);
   font-weight: bold;
@@ -33,10 +30,12 @@ button:hover {
 .table {
   font-size: 100px;
   margin: 10px;
-  width: 40%;
-  height: 240px;
+  width: 35rem;
+  max-width: 60vw;
+  height: 140px;
   /* position: relative; */
-  background-color: rgb(172, 235, 200);
+  /* background-color: rgb(172, 235, 200); */
+  background-color: #999;
   border-radius: 25px;
   padding: 7px;
   display: grid;
@@ -45,9 +44,14 @@ button:hover {
   /* gap: 20px; */
 }
 .table p {
-  font-size: 1rem;
+  font-size: 2rem;
   font-weight: 500;
   align-self: center;
+  display: flex;
+  flex-direction: column;
+}
+.table .logo p {
+  color: pink;
 }
 
 .players {
@@ -106,7 +110,16 @@ button:hover {
   justify-content: center;
 }
 .deck-container button {
-  font-size: small;
+  font-size: xx-small;
+  background-color: rgb(210, 61, 210);
+  color: black;
+  border: none;
+  position: absolute;
+  left: 1rem;
+  top: 5rem; 
+}
+.deck-container {
+  background-color: rgba(255, 255, 255, 0.185);
 }
 
 .table-and-players {
@@ -114,19 +127,38 @@ button:hover {
   justify-content: center;
   align-items: center;
   width: 100%;
+  flex-direction: column;
 }
 .table-and-players .card {
   font-size: 110px;
 }
+.table-and-players .pot {
+  background-color: rgba(255, 255, 255, 0.148);
+  padding: 8px;
+  border-radius: 12px;
+  
+}
 
 .buttons {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
+  position: absolute;
+  font-size: xx-small;
+  bottom: 3vh;
+  left: 1rem;
 }
 .buttons .stage-change button {
   background-color: green;
+  margin-bottom: 1.6rem;
+  margin-top: 0.3rem;
+  height: 2.3rem;
+  justify-self: flex-start;
+}
+.buttons button {
+  background-color: red;
+  height: 1.4rem;
 }
 
 .burnt-cont {

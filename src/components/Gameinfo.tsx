@@ -1,3 +1,5 @@
+import './Gameinfo.css'
+
 interface Props {
     currentGameStage: string,
     bigBlind: number,
@@ -6,11 +8,12 @@ interface Props {
 
 }
 
-const Gameinfo: React.FC<Props> = ({ currentGameStage, bigBlind, smallBlind }) => {
+const Gameinfo: React.FC<Props> = ({ currentGameStage, bigBlind, smallBlind, pot }) => {
     return (
         <div className="game-info">
-            {currentGameStage}
+            <p>Stage: {currentGameStage}</p>
             <p>Blinds: {`${bigBlind} / ${smallBlind}`}</p>
+            <p>Current Pot: {pot}</p>
         </div>
     )
 

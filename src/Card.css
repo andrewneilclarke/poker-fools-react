@@ -4,7 +4,7 @@
 }
 
 .card div p {
-    font-size: 68px;
+    font-size: 50px;
     width: 100%;
     /* display: block; */
     color: rgb(137, 61, 236);
@@ -32,7 +32,7 @@
 
 /* red cards */
 .card .front.red, .front {
-    color: rgb(241, 45, 61);
+    color: rgb(158, 28, 39);
     /* transform: rotateY(90deg);  */
     /* position: absolute; */
 }

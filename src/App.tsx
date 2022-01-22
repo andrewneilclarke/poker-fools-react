@@ -169,9 +169,11 @@ const App = () => {
         {/* <button onClick={fetchRankingResult}>Result</button> */}
       </div>
 
-      {/* DISPLAY TABLE AND PLAYERS */}
+      {/* DISPLAY TABLE / PLAYERS */}
 
       <Table table={table} currentGameStage={currentGameStage} dispatch={dispatch} gameResult={gameResult} players={players} pot={pot} liveDeck={liveDeck} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} getCardFace={getCardFace} gameOver={gameOver} bigBlind={bigBlind} smallBlind={smallBlind} />
+
+      {/* GAME INFO / STATS DISPLAY */}
       <Gameinfo bigBlind={bigBlind} currentGameStage={currentGameStage} pot={pot} smallBlind={smallBlind} />
     </div>
 

@@ -12,7 +12,8 @@
     justify-content: center;
     align-items: center;
     color: rgb(198, 196, 196);
-    position: fixed;
+    /* position:fixed;
+    top: 45%; */
     z-index: -1;
 }
 .table-and-players .table
@@ -22,7 +23,9 @@
 
 .table-and-players .table p {
     font-family: 'Sacramento', cursive;
-    color: #111;
-   
-    
+    color: #111;   
+}
+
+.table-and-players .table .card .flipped .front {
+    font-size: 90px;
 }

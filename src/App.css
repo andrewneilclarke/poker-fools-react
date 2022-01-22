@@ -59,6 +59,7 @@ button:hover {
   grid-template-columns: repeat(3, 200px);
   grid-column-gap: 10px;
   grid-template-rows: repeat(3, 180px);
+  
 }
 .player1, .player2, .player3, .player4 {
   display: flex;
@@ -79,6 +80,9 @@ button:hover {
 .player4 {
   grid-area: 2;
 } 
+.table {
+  grid-area: 1 / 1;
+}
 
 .player1.active, .player2.active, .player3.active, .player4.active {
   font-size: xx-large;
@@ -108,13 +112,14 @@ button:hover {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  position:absolute;
 }
 .deck-container button {
   font-size: xx-small;
   background-color: rgb(210, 61, 210);
   color: black;
   border: none;
-  position: absolute;
+  position: fixed;
   left: 1rem;
   top: 5rem; 
 }

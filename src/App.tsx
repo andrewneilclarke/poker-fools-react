@@ -1,23 +1,25 @@
-import { useState, useEffect, useReducer } from 'react';
-import { v4 as uuid } from 'uuid';
-import { betReducer } from './Reducer';
 import './App.css';
+import { v4 as uuid } from 'uuid';
+import { useState, useEffect, useReducer } from 'react';
+import { betReducer } from './Reducer';
+// Variables
+import { MyDeck, cardNames, cardBack } from './Deck'
+// Functions
+import { shuffle, getCardFace } from './Functions';
+// Types
+import { CardName, PlayerType, AppState, Gamestage, Deck, CardFace, RankingResult, Result } from './Interfaces'
+//Components
 import Card from './components/Card';
-// import Player from './components/Player';
-import Gameinfo from './components/Gameinfo';
-import { Deck, shuffle } from './Deck'
-import { CardType, PlayerType, AppState, Gamestage } from './Interfaces'
 import Table from './components/Table';
+import Gameinfo from './components/Gameinfo';
+// import Player from './components/Player';
 
-const cardNames = Object.keys(Deck).slice(0, 52)
-// const cardFaces = Object.values(Deck).slice(0, 52)
-const cardBack = Object.values(Deck)[52]
 
 const initialState: AppState = {
   player1: { hand: [], stack: 300, bet: 0, name: 'player1', dealer: true, bigBlind: false, smallBlind: false, active: false },
-  player2: { hand: [], stack: 300, bet: 0, name: 'player2', dealer: false, bigBlind: false, smallBlind: false, active: false },
+  player2: { hand: [], stack: 300, bet: 0, name: 'player2', dealer: false, bigBlind: false, smallBlind: false, active: true },
   player3: { hand: [], stack: 300, bet: 0, name: 'player3', dealer: false, bigBlind: true, smallBlind: false, active: false },
-  player4: { hand: [], stack: 300, bet: 0, name: 'player4', dealer: false, bigBlind: false, smallBlind: true, active: true },
+  player4: { hand: [], stack: 300, bet: 0, name: 'player4', dealer: false, bigBlind: false, smallBlind: true, active: false },
   pot: 0
 }
 
@@ -25,35 +27,60 @@ const initialState: AppState = {
 const App = () => {
   const [{ player1, player2, player3, player4, pot }, dispatch] = useReducer(betReducer, initialState)
   const players: PlayerType[] = [player1, player2, player3, player4]
-  const [bigBlind, setBigBlind] = useState(20)
-  const [table, setTable] = useState<CardType[]>([])
-  const [burnt, setBurnt] = useState<CardType[]>([])
+  const [bigBlind, setBigBlind] = useState<number>(20)
+  const [table, setTable] = useState<CardName[]>([])
+  const [burnt, setBurnt] = useState<CardName[]>([])
   const [displayDeck, setDisplayDeck] = useState<boolean>(false)
-  const [gameOver, setGameOver] = useState(null)
+  const [gameOver, setGameOver] = useState<boolean>(false)
   const [currentGameStage, setCurrentGameStage] = useState<string>(Gamestage[0])
-  let [liveDeck, setLiveDeck] = useState([...cardNames])
-  const [flipped, setFlipped] = useState(true)
-  const [gameResult, setGameResult] = useState({
+  let [liveDeck, setLiveDeck] = useState<Deck>([...cardNames])
+  const [flipped, setFlipped] = useState<boolean>(true)
+  const [gameResult, setGameResult] = useState<RankingResult>({
     winners: [],
-    players: [],
-  });
+    players: []
+  })
+
+
+
+  // players: (4) [{…}, {…}, {…}, {…}]
+  // winners: [{…}]
+  // [[Prototype]]: Object
+
+  // Calculate smallblind
   const smallBlind = bigBlind / 2
 
-  const getCardFace = (card) => Deck[card]
+  const getDeck = () => Object.keys(MyDeck) as Array<CardFace>;
 
   useEffect(() => {
-    // shuffle(liveDeck);
-    // console.log('live deck: ', liveDeck)
-    // shuffleCards()
-    // dealFlop(table, player1, player2)
+
+    // WHILE ACTIVE PLAYERS > 1
+    playGame();
+    // FIRST ROUND OF BETS
+    // SECOND ROUND OF BETS
+    // dealTurn()
+    // THIRD ROUND OF BETS
+    // dealRiver()
+    // FOURTH ROUND OF BETS
+    // SHOW DOWN (SHOW CARDS) => FETCH WINNER (& DISPLAY) => PAYOUT POT
+    // nextGame()
+    // console.log('end')
   }, [])
+
+  const playGame = () => {
+    shuffleandSet();
+    // create DEAL PLAYERS FUNCTION
+    dealFlop();
+    dealTurn();
+    dealRiver();
+    getResult();
+  }
 
   const shuffleandSet = () => {
     const shuffed = shuffle(liveDeck)
     setLiveDeck(shuffed)
   }
 
-  const dealFlop = (deck, table, player1, player2) => {
+  const dealFlop = () => {
     setCurrentGameStage(Gamestage[1])
     player1.hand.push(liveDeck.pop())
     player2.hand.push(liveDeck.pop())
@@ -71,7 +98,7 @@ const App = () => {
     return { liveDeck, player1, player2, player3, player4 }
   }
 
-  const dealTurn = (deck, table, burnt, player1, player2) => {
+  const dealTurn = () => {
     setCurrentGameStage(Gamestage[2])
     burnt.push(liveDeck.pop())
     table.push(liveDeck.pop())
@@ -80,7 +107,7 @@ const App = () => {
     return { liveDeck, player1, player2, player3, player4, burnt }
   }
 
-  const dealRiver = (deck, table, burnt, player1, player2) => {
+  const dealRiver = () => {
     setCurrentGameStage(Gamestage[3])
     burnt.push(liveDeck.pop())
     table.push(liveDeck.pop())
@@ -90,29 +117,30 @@ const App = () => {
   }
 
   const getResult = async () => {
-    // const r = await fetchRankingResult
-    // setGameResult(r)
+    const r = await fetchRankingResult()
+    console.log(r)
+    setGameResult(r)
   }
 
   const fetchRankingResult = async () => {
     // TO IMPLEMENT
-    // const finaltable = table.join(',')
-    // console.log(table)
-    // let players = [player1, player2, player3, player4]
-    // players = [players.map((p) => `&pc[]=${p.hand.join(',')}`).join('')]
-    // console.log('table: ', table, 'players', players)
+    const finaltable = table.join(',')
+    let players: any = [player1, player2, player3, player4]
+    players = players.map((p) => `&pc[]=${p.hand.join(',')}`).join('')
+    console.log(finaltable, players)
+    let url = `https://api.pokerapi.dev/v1/winner/texas_holdem?cc=${finaltable}${players}`;
+
 
     // const table = game.table.join(',');
 
-    // table:  9H,3S,2D,8C,2C players:  &pc[]=QS,QH&pc[]=7D,7H&pc[]=JD,AH
+    // table: 9H, 3S, 2D, 8C, 2C players:  & pc[]=QS, QH & pc[]=7D, 7H & pc[]=JD, AH
     // const players = game.players.map((p) => `&pc[]=${p.hand.join(',')}`).join('');
 
     // let url = `https://api.pokerapi.dev/v1/winner/texas_holdem?cc=${finaltable}${players}`;
     // let url =
     //   'https://api.pokerapi.dev/v1/winner/texas_holdem?cc=AC,KD,QH,JS,7C&pc[]=10S,8C&pc[]=3S,2C&pc[]=QS,JH';
-    // const res = await fetch(url);
-    // console.log(res.json())
-    // return res.json();
+    const res = await fetch(url);
+    return res.json();
   };
 
   // const equalHand = (p: Player) => (r: Result) => r.hand === p.hand.join(',');
@@ -138,7 +166,7 @@ const App = () => {
       <div className='deck-container'>
 
         {/* DISPLAY DECK */}
-        <button onClick={() => setDisplayDeck(!displayDeck)}>{displayDeck ? 'Hide Deck' : 'Display Deck (Admin)'}</button>
+        {/* <button onClick={() => setDisplayDeck(!displayDeck)}>{displayDeck ? 'Hide Deck' : 'Display Deck (Admin)'}</button> */}
         {displayDeck && liveDeck.map(card =>
         (<div id="deck" key={uuid()}>
           <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
@@ -161,20 +189,20 @@ const App = () => {
       <div className="buttons">
         {currentGameStage === Gamestage[0] && <button onClick={shuffleandSet}>Shuffle</button>}
         <div className="stage-change">
-          {currentGameStage === Gamestage[0] && <button onClick={() => dealFlop(liveDeck, table, player1, player2)}>Deal Flop</button>}
-          {currentGameStage === Gamestage[1] && <button onClick={() => dealTurn(liveDeck, table, burnt, player1, player2)}>Deal Turn</button>}
-          {currentGameStage === Gamestage[2] && <button onClick={() => dealRiver(liveDeck, table, burnt, player1, player2)}>Deal River</button>}
+          {currentGameStage === Gamestage[0] && <button onClick={() => dealFlop()}>Deal Flop</button>}
+          {currentGameStage === Gamestage[1] && <button onClick={() => dealTurn()}>Deal Turn</button>}
+          {currentGameStage === Gamestage[2] && <button onClick={() => dealRiver()}>Deal River</button>}
         </div>
-        <button onClick={nextGame}>Next Game / Reset Cards</button>
+        <button onClick={nextGame}>Clear Table / Next Game</button>
         {/* <button onClick={fetchRankingResult}>Result</button> */}
       </div>
 
       {/* DISPLAY TABLE / PLAYERS */}
 
-      <Table table={table} currentGameStage={currentGameStage} dispatch={dispatch} gameResult={gameResult} players={players} pot={pot} liveDeck={liveDeck} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} getCardFace={getCardFace} gameOver={gameOver} bigBlind={bigBlind} smallBlind={smallBlind} />
+      <Table table={table} currentGameStage={currentGameStage} dispatch={dispatch} gameResult={gameResult} players={players} pot={pot} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} getCardFace={getCardFace} gameOver={gameOver} bigBlind={bigBlind} smallBlind={smallBlind} />
 
       {/* GAME INFO / STATS DISPLAY */}
-      <Gameinfo bigBlind={bigBlind} currentGameStage={currentGameStage} pot={pot} smallBlind={smallBlind} />
+      <Gameinfo bigBlind={bigBlind} currentGameStage={currentGameStage} pot={pot} smallBlind={smallBlind} gameResult={gameResult} players={players} />
     </div>
 
   );

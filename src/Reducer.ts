@@ -1,4 +1,6 @@
-export const betReducer = (state, action) => {
+import { AppState } from './Interfaces'
+
+export const betReducer = (state: AppState, action: any) => {
     switch (action.type) {
         case 'submit-bet': {
             switch (action.player.name) {
@@ -132,5 +134,5 @@ export const betReducer = (state, action) => {
 
     }
 
-    return state
+    throw Error("No Action provided")
 }

@@ -1,10 +1,10 @@
 import '../Card.css'
 import { useState } from 'react'
-import { CardType } from '../Interfaces'
+import { CardName } from '../Interfaces'
 
 interface Props {
-    card: string,
-    getCardFace: (card: string) => CardType,
+    card: CardName,
+    getCardFace: (card: CardName) => string,
     cardBack: string,
     flipped: boolean,
     setFlipped: any,

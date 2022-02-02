@@ -1,8 +1,12 @@
 .game-info {
-    background-color: black;
-    color: rgb(210, 61, 210);
+    /* background: none; */
+    color: #999;
     position: absolute;
     bottom: 20vh;
     left: 1rem;
+    max-width: 8vw;
 }
 
+.game-info p {
+    margin-bottom: 4px;
+}

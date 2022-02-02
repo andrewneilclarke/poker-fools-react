@@ -1,4 +1,6 @@
-export const Deck = {
+import { CardName, CardFace } from './Interfaces'
+
+export const MyDeck: Record<CardName, CardFace> = {
     '2H': '🂲',
     '3H': '🂳',
     '4H': '🂴',
@@ -54,6 +56,7 @@ export const Deck = {
     BACK: '🂠'
 }
 
-export const shuffle = (deck) => {
-    return [...deck.sort(() => Math.random() - 0.5)]
-} 
+export const cardNames = Object.keys(MyDeck).slice(0, 52) as CardName[]
+// export const cardFaces = Object.values(MyDeck).slice(0, 52) as CardFace[]
+export const cardBack = Object.values(MyDeck)[52] as CardFace
+

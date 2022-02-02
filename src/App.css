@@ -14,8 +14,8 @@
 }
 
 button {
-  background: hsl(283, 91%, 23%);
-  border: 2px solid #fff;
+  background: black;
+  border: none;
   /* padding: 6px 12px; */
   border-radius: 9px;
   color: rgb(185, 184, 184);
@@ -55,10 +55,12 @@ button:hover {
 }
 
 .players {
-  display: grid;
+  display: flex;
+  position: relative;
+  /* display: grid;
   grid-template-columns: repeat(3, 200px);
   grid-column-gap: 10px;
-  grid-template-rows: repeat(3, 180px);
+  grid-template-rows: repeat(3, 180px); */
   
 }
 .player1, .player2, .player3, .player4 {
@@ -66,6 +68,7 @@ button:hover {
   flex-direction: column;
   align-items: center;
   margin: 10px;
+  background-color: rgba(0, 0, 0, 0.048);
 }
 .player1 {
   grid-area: 3 / 2;
@@ -89,16 +92,26 @@ button:hover {
 }
 
 .player-details {
-  font-size: medium;
   display: flex;
   flex-direction: column;
   width: 100%;
-  justify-content: space-evenly;
+  justify-content:flex-start;
+  align-items: center;
+  height: 30vh;
 }
-.player-details .buttons {
-  font-size: x-small;
-  display: flex;
-  justify-content: space-between;
+.player-details button {
+  font-size: large;
+  margin-bottom: 0.5rem;
+  /* display: flex;
+  justify-content: space-between; */
+}
+.player-details p {
+  margin-bottom: 0.5rem;
+ 
+}
+.player-buttons {
+  /* display: flex;
+  justify-content: space-evenly; */
 }
 
 .cards {
@@ -124,7 +137,7 @@ button:hover {
   top: 5rem; 
 }
 .deck-container {
-  background-color: rgba(255, 255, 255, 0.185);
+  background-color: rgba(255, 255, 255, 0.764);
 }
 
 .table-and-players {
@@ -163,8 +176,9 @@ button:hover {
 }
 .buttons button {
   background-color: red;
-  height: 1.4rem;
+  height: 1.3rem;
 }
+
 
 .burnt-cont {
   display: flex;

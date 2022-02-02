@@ -9,6 +9,7 @@ interface Props {
     cardBack: CardFace,
     flipped: boolean,
     setFlipped: any,
+    flipTable: boolean,
     gameOver: boolean,
     currentGameStage: string,
     table: CardName[],
@@ -21,14 +22,11 @@ interface Props {
 
 }
 
-const Table: React.FC<Props> = ({ table, players, pot, gameResult, dispatch, getCardFace, cardBack, flipped, setFlipped, gameOver, currentGameStage, smallBlind, bigBlind }) => {
-    console.log(players)
+const Table: React.FC<Props> = ({ table, players, pot, gameResult, dispatch, getCardFace, cardBack, flipped, setFlipped, gameOver, currentGameStage, smallBlind, bigBlind, flipTable }) => {
     return (
         <div className="table-container">
             <div className="table-and-players">
                 <div className="table-and-pot">
-
-
                     <p className="pot">Pot: {pot}</p>
                     <div className="table">
                         <div className="logo">
@@ -36,7 +34,7 @@ const Table: React.FC<Props> = ({ table, players, pot, gameResult, dispatch, get
                             <p> Fools</p>
                         </div>
                         {!gameOver && table.map(card => (
-                            <Card key={uuid()} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />
+                            <Card key={uuid()} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipTable ? true : false} setFlipped={setFlipped} />
                         ))}
                     </div>
                 </div>
@@ -48,11 +46,6 @@ const Table: React.FC<Props> = ({ table, players, pot, gameResult, dispatch, get
                 </div>
             </div>
         </div>
-
-
-
-
-
 
     )
 }

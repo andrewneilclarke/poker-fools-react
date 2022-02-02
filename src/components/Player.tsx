@@ -26,7 +26,7 @@ const Player: React.FC<Props> = ({ player, getCardFace, cardBack, flipped, setFl
             </div>
 
             <div className="player-details">
-                <p>{JSON.stringify(player.hand)}</p>
+                {/* <p>{JSON.stringify(player.hand)}</p> */}
 
                 {player.active && (
                     <>

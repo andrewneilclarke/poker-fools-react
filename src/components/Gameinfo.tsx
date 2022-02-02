@@ -1,6 +1,7 @@
 import './Gameinfo.css'
 import { useState } from 'react'
 import { RankingResult, PlayerType } from '../Interfaces'
+import Player from './Player'
 
 interface Props {
     currentGameStage: string,
@@ -14,15 +15,28 @@ interface Props {
 const Gameinfo: React.FC<Props> = ({ currentGameStage, bigBlind, smallBlind, pot, gameResult, players }) => {
     const [message, setMessage] = useState<string>('')
 
-    const getWinnerName = (gameResult, players) => {
-        console.log(gameResult, players)
-        return 'test'
-    }
+    const getWinnerName = (gameResult: RankingResult, players: PlayerType[]): string[] | string => {
+        const resultCards = gameResult.winners[0].cards;
+        const winningPlayersArr = players.filter(player => player.hand.join(',') === resultCards)
+        const namesArr = (winningPlayersArr.map(player => player.name))
+        if (namesArr.length > 1) {
+            let string = ``
+            namesArr.forEach(name => string = string = name + ' ')
+            return string
+        } else return namesArr[0]
 
+
+    }
+    // || 'straight' || 'flush' || 'full_house'
     const formatWinnerHand = (str: string) => {
+        let formattedStr: string;
         if (str.toLowerCase() === 'pair' || 'straight' || 'flush' || 'full_house') {
-            return `a ${str.toLowerCase().replaceAll('_', ' ')}`
-        } else return `${str.toLowerCase().replaceAll('_', ' ')}`
+            formattedStr = `a ${str.toLowerCase().replaceAll('_', ' ')}`
+        }
+        else {
+            formattedStr = `${str.toLowerCase().replaceAll('_', ' ')}`
+        }
+        return formattedStr
     }
 
     return (

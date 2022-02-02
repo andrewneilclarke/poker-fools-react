@@ -35,6 +35,7 @@ const App = () => {
   const [currentGameStage, setCurrentGameStage] = useState<string>(Gamestage[0])
   let [liveDeck, setLiveDeck] = useState<Deck>([...cardNames])
   const [flipped, setFlipped] = useState<boolean>(true)
+  const [flipTable, setFlipTable] = useState<boolean>(false)
   const [gameResult, setGameResult] = useState<RankingResult>({
     winners: [],
     players: []
@@ -70,9 +71,11 @@ const App = () => {
     shuffleandSet();
     // create DEAL PLAYERS FUNCTION
     dealFlop();
-    dealTurn();
-    dealRiver();
-    getResult();
+    // // FIRST ROUND OF BETS
+    // setFlipTable(true)
+    // dealTurn();
+    // dealRiver();
+    // getResult();
   }
 
   const shuffleandSet = () => {
@@ -123,22 +126,10 @@ const App = () => {
   }
 
   const fetchRankingResult = async () => {
-    // TO IMPLEMENT
     const finaltable = table.join(',')
     let players: any = [player1, player2, player3, player4]
     players = players.map((p) => `&pc[]=${p.hand.join(',')}`).join('')
-    console.log(finaltable, players)
     let url = `https://api.pokerapi.dev/v1/winner/texas_holdem?cc=${finaltable}${players}`;
-
-
-    // const table = game.table.join(',');
-
-    // table: 9H, 3S, 2D, 8C, 2C players:  & pc[]=QS, QH & pc[]=7D, 7H & pc[]=JD, AH
-    // const players = game.players.map((p) => `&pc[]=${p.hand.join(',')}`).join('');
-
-    // let url = `https://api.pokerapi.dev/v1/winner/texas_holdem?cc=${finaltable}${players}`;
-    // let url =
-    //   'https://api.pokerapi.dev/v1/winner/texas_holdem?cc=AC,KD,QH,JS,7C&pc[]=10S,8C&pc[]=3S,2C&pc[]=QS,JH';
     const res = await fetch(url);
     return res.json();
   };
@@ -193,13 +184,14 @@ const App = () => {
           {currentGameStage === Gamestage[1] && <button onClick={() => dealTurn()}>Deal Turn</button>}
           {currentGameStage === Gamestage[2] && <button onClick={() => dealRiver()}>Deal River</button>}
         </div>
+        <button onClick={getResult}>Get result</button>
         <button onClick={nextGame}>Clear Table / Next Game</button>
-        {/* <button onClick={fetchRankingResult}>Result</button> */}
+
       </div>
 
       {/* DISPLAY TABLE / PLAYERS */}
 
-      <Table table={table} currentGameStage={currentGameStage} dispatch={dispatch} gameResult={gameResult} players={players} pot={pot} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} getCardFace={getCardFace} gameOver={gameOver} bigBlind={bigBlind} smallBlind={smallBlind} />
+      <Table table={table} currentGameStage={currentGameStage} dispatch={dispatch} gameResult={gameResult} players={players} pot={pot} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} getCardFace={getCardFace} gameOver={gameOver} bigBlind={bigBlind} smallBlind={smallBlind} flipTable={flipTable} />
 
       {/* GAME INFO / STATS DISPLAY */}
       <Gameinfo bigBlind={bigBlind} currentGameStage={currentGameStage} pot={pot} smallBlind={smallBlind} gameResult={gameResult} players={players} />

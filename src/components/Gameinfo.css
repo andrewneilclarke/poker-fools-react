@@ -1,10 +1,15 @@
 .game-info {
-    /* background: none; */
-    color: #999;
+    background: black;
+    color: white;
+    padding: 5px;
+    border-radius: 12px;
     position: absolute;
-    bottom: 20vh;
-    left: 1rem;
+    bottom: 2rem;
+    right: 2rem;
     max-width: 8vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .game-info p {

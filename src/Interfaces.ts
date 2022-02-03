@@ -26,10 +26,18 @@ export interface Player {
 }
 
 export enum Gamestage {
+    // 'Waiting',
     'Pre-flop',
     'Flop',
     'Turn',
-    'River'
+    'River',
+    'Showdown',
+}
+
+export enum PlayerStatus {
+    'active',
+    'sitting-out',
+    'vacated',
 }
 
 export interface PlayerType {
@@ -40,7 +48,9 @@ export interface PlayerType {
     dealer: boolean,
     active: boolean,
     bigBlind: boolean,
-    smallBlind: boolean
+    smallBlind: boolean,
+    folded: boolean,
+    allin: boolean,
 }
 
 export interface AppState {
@@ -68,3 +78,9 @@ export interface RankingResult {
     winners: Array<Result>;
     players: Array<Result>;
 }
+
+export type Action =
+    | { type: 'submit-bet', betAmount: string, player: Player }
+    | { type: 'make-active', player: Player }
+    | { type: 'reset-player-cards' }
+    | { type: 'clear' }

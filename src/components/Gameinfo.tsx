@@ -1,7 +1,6 @@
 import './Gameinfo.css'
 import { useState } from 'react'
 import { RankingResult, PlayerType } from '../Interfaces'
-import Player from './Player'
 
 interface Props {
     currentGameStage: string,
@@ -10,9 +9,10 @@ interface Props {
     pot: number,
     gameResult: RankingResult,
     players: PlayerType[],
+    myError: any,
 }
 
-const Gameinfo: React.FC<Props> = ({ currentGameStage, bigBlind, smallBlind, pot, gameResult, players }) => {
+const Gameinfo: React.FC<Props> = ({ currentGameStage, bigBlind, smallBlind, pot, gameResult, players, myError }) => {
     const [message, setMessage] = useState<string>('')
 
     const getWinnerName = (gameResult: RankingResult, players: PlayerType[]): string[] | string => {
@@ -29,9 +29,9 @@ const Gameinfo: React.FC<Props> = ({ currentGameStage, bigBlind, smallBlind, pot
     }
     // || 'straight' || 'flush' || 'full_house'
     const formatWinnerHand = (str: string) => {
-        let formattedStr: string;
-        if (str.toLowerCase() === 'pair' || 'straight' || 'flush' || 'full_house') {
-            formattedStr = `a ${str.toLowerCase().replaceAll('_', ' ')}`
+        let formattedStr = str.toLowerCase()
+        if (formattedStr === 'pair' || formattedStr === 'straight' || formattedStr === 'flush' || formattedStr === 'full_house') {
+            formattedStr = `a ${formattedStr.replaceAll('_', ' ')}`
         }
         else {
             formattedStr = `${str.toLowerCase().replaceAll('_', ' ')}`
@@ -45,7 +45,11 @@ const Gameinfo: React.FC<Props> = ({ currentGameStage, bigBlind, smallBlind, pot
             <p>Blinds: {`${bigBlind} / ${smallBlind}`}</p>
             <p>Current Pot: {pot}</p>
             <p>Result: {message}</p>
-            <p>{gameResult.winners.length === 1 && `${getWinnerName(gameResult, players)} wins with ${formatWinnerHand(gameResult.winners[0].result)}`}</p>
+            {gameResult.winners.length === 1 &&
+                <p>{`${getWinnerName(gameResult, players)} wins with ${formatWinnerHand(gameResult.winners[0].result)} ${gameResult.winners[0].hand}`}</p>
+            }
+            {myError && <p>{myError}</p>}
+
         </div>
     )
 

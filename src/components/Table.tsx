@@ -41,7 +41,7 @@ const Table: React.FC<Props> = ({ table, players, pot, gameResult, dispatch, get
 
                 <div className="players">
                     {players && players.map(player => (
-                        <Player key={player.name} player={player} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} smallBlind={smallBlind} dispatch={dispatch} />
+                        <Player key={player.name} player={player} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} smallBlind={smallBlind} bigBlind={bigBlind} dispatch={dispatch} />
                     ))}
                 </div>
             </div>

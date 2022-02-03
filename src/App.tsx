@@ -7,19 +7,18 @@ import { MyDeck, cardNames, cardBack } from './Deck'
 // Functions
 import { shuffle, getCardFace } from './Functions';
 // Types
-import { CardName, PlayerType, AppState, Gamestage, Deck, CardFace, RankingResult, Result } from './Interfaces'
+import { CardName, PlayerType, AppState, Gamestage, Deck, CardFace, RankingResult } from './Interfaces'
 //Components
 import Card from './components/Card';
 import Table from './components/Table';
 import Gameinfo from './components/Gameinfo';
-// import Player from './components/Player';
 
 
 const initialState: AppState = {
-  player1: { hand: [], stack: 300, bet: 0, name: 'player1', dealer: true, bigBlind: false, smallBlind: false, active: false },
-  player2: { hand: [], stack: 300, bet: 0, name: 'player2', dealer: false, bigBlind: false, smallBlind: false, active: true },
-  player3: { hand: [], stack: 300, bet: 0, name: 'player3', dealer: false, bigBlind: true, smallBlind: false, active: false },
-  player4: { hand: [], stack: 300, bet: 0, name: 'player4', dealer: false, bigBlind: false, smallBlind: true, active: false },
+  player1: { hand: [], stack: 300, bet: 0, name: 'andy', dealer: true, bigBlind: false, smallBlind: false, active: false, folded: false, allin: false },
+  player2: { hand: [], stack: 300, bet: 0, name: 'rory', dealer: false, bigBlind: false, smallBlind: false, active: true, folded: false, allin: false },
+  player3: { hand: [], stack: 300, bet: 0, name: 'fred', dealer: false, bigBlind: true, smallBlind: false, active: false, folded: false, allin: false },
+  player4: { hand: [], stack: 300, bet: 0, name: 'carlo', dealer: false, bigBlind: false, smallBlind: true, active: false, folded: false, allin: false },
   pot: 0
 }
 
@@ -32,7 +31,7 @@ const App = () => {
   const [burnt, setBurnt] = useState<CardName[]>([])
   const [displayDeck, setDisplayDeck] = useState<boolean>(false)
   const [gameOver, setGameOver] = useState<boolean>(false)
-  const [currentGameStage, setCurrentGameStage] = useState<string>(Gamestage[0])
+  const [currentGameStage, setCurrentGameStage] = useState<string>(Gamestage[1])
   let [liveDeck, setLiveDeck] = useState<Deck>([...cardNames])
   const [flipped, setFlipped] = useState<boolean>(true)
   const [flipTable, setFlipTable] = useState<boolean>(false)
@@ -40,12 +39,7 @@ const App = () => {
     winners: [],
     players: []
   })
-
-
-
-  // players: (4) [{…}, {…}, {…}, {…}]
-  // winners: [{…}]
-  // [[Prototype]]: Object
+  const [myError, setMyError] = useState<string | null>(null)
 
   // Calculate smallblind
   const smallBlind = bigBlind / 2
@@ -127,12 +121,18 @@ const App = () => {
 
   const fetchRankingResult = async () => {
     const finaltable = table.join(',')
-    let players: any = [player1, player2, player3, player4]
+    let players: PlayerType[] | string = [player1, player2, player3, player4]
     players = players.map((p) => `&pc[]=${p.hand.join(',')}`).join('')
     let url = `https://api.pokerapi.dev/v1/winner/texas_holdem?cc=${finaltable}${players}`;
-    const res = await fetch(url);
-    return res.json();
-  };
+    try {
+      const res = await fetch(url);
+      return res.json();
+    } catch (error) {
+      setMyError(`😖 Oh man! ${error}`);
+      console.log("PokerApi error", error);
+      throw error
+    }
+  }
 
   // const equalHand = (p: Player) => (r: Result) => r.hand === p.hand.join(',');
 
@@ -146,7 +146,6 @@ const App = () => {
     setCurrentGameStage(Gamestage[0])
     dispatch({ type: 'reset-player-cards' })
     refillDeck()
-    shuffleandSet()
   }
 
   return (
@@ -194,7 +193,7 @@ const App = () => {
       <Table table={table} currentGameStage={currentGameStage} dispatch={dispatch} gameResult={gameResult} players={players} pot={pot} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} getCardFace={getCardFace} gameOver={gameOver} bigBlind={bigBlind} smallBlind={smallBlind} flipTable={flipTable} />
 
       {/* GAME INFO / STATS DISPLAY */}
-      <Gameinfo bigBlind={bigBlind} currentGameStage={currentGameStage} pot={pot} smallBlind={smallBlind} gameResult={gameResult} players={players} />
+      <Gameinfo bigBlind={bigBlind} currentGameStage={currentGameStage} pot={pot} smallBlind={smallBlind} gameResult={gameResult} players={players} myError={myError} />
     </div>
 
   );

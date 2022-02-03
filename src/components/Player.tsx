@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { CardName, PlayerType } from '../Interfaces'
+import { PlayerType } from '../Interfaces'
 import Card from "./Card"
 
 interface Props {
@@ -9,10 +9,11 @@ interface Props {
     flipped: boolean,
     setFlipped: any,
     dispatch: React.Dispatch<any>,
-    smallBlind: number
+    smallBlind: number,
+    bigBlind: number,
 }
 
-const Player: React.FC<Props> = ({ player, getCardFace, cardBack, flipped, setFlipped, dispatch, smallBlind }) => {
+const Player: React.FC<Props> = ({ player, getCardFace, cardBack, flipped, setFlipped, dispatch, smallBlind, bigBlind }) => {
     const [betAmount, setBetAmount] = useState(0)
 
     return (
@@ -38,6 +39,7 @@ const Player: React.FC<Props> = ({ player, getCardFace, cardBack, flipped, setFl
                                 }
                             }
                             }>-</button>
+                            {player.bet < bigBlind && <button onClick={() => dispatch({ type: 'call', betAmount, player, bigBlind })}>Call {bigBlind}</button>}
                             <form onSubmit={(e) => {
                                 e.preventDefault();
                                 dispatch({ type: 'submit-bet', betAmount, player });

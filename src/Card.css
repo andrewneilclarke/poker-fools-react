@@ -4,23 +4,17 @@
 }
 
 .card div p {
-    font-size: 6.5rem;
+    font-size: 5.5rem;
     width: 100%;
-    /* display: block; */
-    color: rgb(137, 61, 236);
 }
-/* caard back (unflipped) */
+/* card back (unflipped) */
 .card .flipped .back {
     color: rgb(137, 61, 236);
 }
-/* card back (flipped) */
-#cardback {
-    /* position: absolute; */
-    /* display: none; */
-    opacity: 0;
-}
+
+
 .card div .cardback {
-    color: rgb(251, 124, 211);
+    /* color: rgb(251, 124, 211); */
 }
 
 .card .front {
@@ -30,25 +24,8 @@
     color: black;
 }
 
-/* red cards */
 .card .front.red, .front {
-    color: rgb(158, 28, 39);
+    color: rgb(209, 49, 63);
     /* transform: rotateY(90deg);  */
     /* position: absolute; */
 }
-.card .front, .front.red {
-    /* transform: rotateY(90deg); */
-    /* position: absolute;
-    color: greenyellow; */
-}
-/* red flipped cards */
-.card .flipped .front.red {
-    /* transform: rotateY(0deg); */
-    /* color:coral; */
-}
-/* black flipped cards */
-.card .flipped .front {
-    /* transform: rotateY(0deg); 
-    color:coral; */
-}
-/*  */

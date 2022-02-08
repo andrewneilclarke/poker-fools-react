@@ -15,3 +15,6 @@
 .game-info p {
     margin-bottom: 4px;
 }
+.game-info .winner {
+    text-transform: capitalize;
+}

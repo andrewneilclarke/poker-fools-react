@@ -15,11 +15,13 @@ const Card: React.FC<Props> = ({ card, getCardFace, cardBack, flipped, setFlippe
 
     // helper funtion to check card colour
     const checkColour = (card: string) => {
-        const cardArr = card.toLowerCase().split('')
-        const hasRed = cardArr.filter(item =>
-            item === 'h' || item === 'd'
-        )
-        return hasRed.length > 0
+        if (card) {
+            const cardArr = card.toLowerCase().split('')
+            const hasRed = cardArr.filter(item =>
+                item === 'h' || item === 'd'
+            )
+            return hasRed.length > 0
+        }
     }
 
     const flipCard = (card: string) => {

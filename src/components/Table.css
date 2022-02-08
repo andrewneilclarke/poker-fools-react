@@ -2,12 +2,13 @@
 
 
 .table-container {
-    margin: 10px;
+    margin: 5px;
     height: 88vh;
-    width: 88vw;
+    /* width: 88vw; */
     border: 25px solid rgb(50, 37, 23);
     border-radius: 55%;
-    background-color: rgb(17, 148, 17);
+    background-color: rgb(126, 201, 126);
+    /* background-color: rgb(17, 148, 17); */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,15 +22,14 @@
      flex-direction: column;
      justify-content: center;
      align-items: center;
-}
-.table-and-pot .pot
-{   
-     width: 4rem;
+     grid-column: 2/3;
+     grid-row: 2/3;
 }
 
 .table-and-players .table p {
     font-family: 'Sacramento', cursive;
     color: #111;   
+    
 }
 
 .table-and-players .table .card .flipped .front {

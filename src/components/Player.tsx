@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { MdPerson } from "react-icons/md";
 import { PlayerType } from '../Interfaces'
 import Card from "./Card"
 
 interface Props {
     player: PlayerType,
+    players: PlayerType[]
     getCardFace: (card: string) => string,
     cardBack: string,
     flipped: boolean,
@@ -13,23 +15,24 @@ interface Props {
     bigBlind: number,
 }
 
-const Player: React.FC<Props> = ({ player, getCardFace, cardBack, flipped, setFlipped, dispatch, smallBlind, bigBlind }) => {
+const Player: React.FC<Props> = ({ player, players, getCardFace, cardBack, flipped, setFlipped, dispatch, smallBlind, bigBlind }) => {
     const [betAmount, setBetAmount] = useState(0)
-
     return (
-        <div className={player.name} onClick={() => dispatch({ type: 'make-active', player })}>
-            <p>{player.name.toUpperCase()} {player.dealer && 'D'} {player.bigBlind && 'BB'} {player.smallBlind && 'SB'}</p>
-            <p>{player.stack}</p>
+
+        <div className={player.name} id="player" onClick={() => dispatch({ type: 'make-active', player, players })}>
             <div className="cards">
                 {player.hand.map(card => (
                     <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />))
                 }
             </div>
+            <MdPerson style={{ height: "5em", width: "5em" }} />
+            <h4 className="player-info" id="name">{player.name} {player.dealer && 'D'} {player.bigBlind && 'BB'} {player.smallBlind && 'SB'} <p className="stack">{player.stack}</p></h4>
+
 
             <div className="player-details">
                 {/* <p>{JSON.stringify(player.hand)}</p> */}
 
-                {player.active && (
+                {/* {player.active && (
                     <>
                         <div className="player-buttons">
                             <button onClick={() => setBetAmount(betAmount + smallBlind)}>+</button>
@@ -49,18 +52,19 @@ const Player: React.FC<Props> = ({ player, getCardFace, cardBack, flipped, setFl
                                 {betAmount > 0 && <button type='submit' className='submit'>Bet {betAmount}</button>
 
                                 }
+                                {betAmount}
+                                {player.bet}
                             </form>
 
                         </div>
 
-                        <div>{betAmount}</div>
-                        <div>{player.bet}</div>
                     </>
                 )
-                }
+                } */}
             </div>
 
         </div>
+
     )
 }
 

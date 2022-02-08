@@ -16,7 +16,8 @@
 button {
   background: black;
   border: none;
-  /* padding: 6px 12px; */
+  padding: 6px 12px;
+  margin-bottom: 0.8rem;
   border-radius: 9px;
   color: rgb(185, 184, 184);
   font-weight: bold;
@@ -35,7 +36,7 @@ button:hover {
   height: 140px;
   /* position: relative; */
   /* background-color: rgb(172, 235, 200); */
-  background-color: #999;
+  background-color: rgb(216, 213, 213);
   border-radius: 25px;
   padding: 7px;
   display: grid;
@@ -54,46 +55,49 @@ button:hover {
   color: pink;
 }
 
-.players {
-  display: flex;
-  position: relative;
-  /* display: grid;
-  grid-template-columns: repeat(3, 200px);
-  grid-column-gap: 10px;
-  grid-template-rows: repeat(3, 180px); */
-  
+.player-info {
+  text-transform: capitalize;
+  font-size: x-small;
+  color: rgb(207, 206, 206);
+  background-color: #666;
+  width: 70%;
+  border-radius: 8px;
+  padding: 2px;
 }
-.player1, .player2, .player3, .player4 {
+
+#name {
+  text-decoration: underline;
+}
+#player {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 10px;
-  background-color: rgba(0, 0, 0, 0.048);
-}
-.player1 {
-  grid-area: 3 / 2;
-} 
- .player2 {
-  grid-area: 2 / -2;
-} 
- .player3 {
-  grid-area: 1 / 2;
-  
-}
-.player4 {
-  grid-area: 2;
-} 
-.table {
-  grid-area: 1 / 1;
+  /* margin: 10px; */
+  background-color: rgba(255, 255, 255, 0.353);
+  padding: 0.2rem;
+  height: 13.5rem;
+  width: 11.5rem;
+  border-radius: 12px; 
 }
 
-.player1.active, .player2.active, .player3.active, .player4.active {
-  font-size: xx-large;
+.andy {
+  grid-column: 2/3;
+}
+.rory {
+  grid-column: 3/4;
+  grid-row: 2/3;
+}
+.fred {
+  grid-column: 2/3;
+  grid-row: 3/4;
+}
+.carlo {
+  grid-row: 2/3;
 }
 
 .player-details {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
   justify-content:flex-start;
   align-items: center;
@@ -140,9 +144,15 @@ button:hover {
 }
 
 .table-and-players {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1.2fr 1.2fr 1.2fr;
+  /* grid-row-gap: 1em; */
+  /* grid-template-rows: min-content 1fr min-content; */
+  /* row-gap: 3rem; */
   justify-content: center;
   align-items: center;
+  justify-items: center;
   width: 100%;
   flex-direction: column;
 }
@@ -150,10 +160,10 @@ button:hover {
   font-size: 110px;
 }
 .table-and-players .pot {
-  background-color: rgba(255, 255, 255, 0.148);
+  background-color: rgba(255, 255, 255, 0.363);
   padding: 8px;
   border-radius: 12px;
-  
+  font-size: large;
 }
 
 .buttons {
@@ -189,8 +199,4 @@ button:hover {
   align-items: center;
   font-size: 20px;
   margin-left: 20px;
-}
-
-.pot {
-  font-size: large;
 }

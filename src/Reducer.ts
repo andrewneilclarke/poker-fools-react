@@ -1,6 +1,6 @@
 import { AppState, Action } from './Interfaces'
 
-export const betReducer = (state: AppState, action: any) => {
+export const betReducer = (state: any, action: any) => {
     switch (action.type) {
         case 'submit-bet': {
             switch (action.player.name) {
@@ -39,37 +39,32 @@ export const betReducer = (state: AppState, action: any) => {
         }
 
         case 'make-active': {
-            // console.log('state: ', state)
-            // console.log(action.player, state)
+            // console.log(state.players.map(p => p.name === action.player.name))
+            console.log(action.player.name)
+            // console.log(state.players.map(player => {
+            //     if (player.name === action.player.name) {
+            //         return { ...player, active: true }
+            //     }
+            // }))
 
-            console.log('this players name: ', action.player.name)
 
-            const selectedArr = Object.entries(state).filter(p => p[1].name === action.player.name)
-            const selectedPlayerName = selectedArr[0][0]
-            const selectedActive = (selectedArr[0][1].active)
-            // console.log('selected player', selectedPlayer)
-            // console.log('player name from state: ', selectedActive)
-            // console.log(selectedActive)
-            const makeMeActive = Object.entries(state).filter(p => p[1].name === action.player.name)[0][0]
-            // console.log(Object.entries(state).filter((p) => p[1].name === action.player.name)[0])
-            // console.log(selectedPlayerName)
-            console.log(selectedPlayerName)
-            // const { selectedPlayerName: thisPlayer } = Object.entries(state)[0]
-            console.log(state[selectedPlayerName])
-            const hhhh = state[selectedPlayerName]
-            console.log(makeMeActive)
+            // const selectedPlayerArr = Object.entries(state).filter(arr => arr[1].name === action.player.name)
+            // const selectedPlayerObj = selectedPlayerArr[0]
+            // const selectedPlayerName = selectedPlayerObj[0]
+            // const sName = action.player.name
+            // console.log(selectedPlayerObj)
 
-            console.log(state[`${selectedPlayerName}`])
-
-            // const {selectedPlayerName} = state 
-            // console.log(state[selectedPlayerName].active)
-            // return {
-            //     ...state,
-            //     state[action.player.name],
-            // }
 
             return {
                 ...state,
+                players: state.players.map((p, name) => p.name === action.player.name ? { ...p, active: true } : { ...p, active: false })
+                // .map((p, name) => name !== action.player.name ? { ...p, active: false } : p)
+
+                // state.players.map(p => p.name === action.player.name ? p.active : true)
+                // .map(p => p.name !== action.player.name ? p.active : false)
+                // state.players.map(p => p.name === action.player.name:
+                // players: ...players.map(p => p.name === action.player.name, active: true )
+
                 // player4: {
                 //     ...state.player4, active: false
                 // },
@@ -82,83 +77,80 @@ export const betReducer = (state: AppState, action: any) => {
                 // player1: {
                 //     ...state.player1, active: false
                 // },
-
-                makeMeActive: {
-                    ...state[selectedPlayerName], active: true
-                },
-
-                // if (action.player.name === 'carlo') {
-                //     return {
-                //         ...state,
-                //         player4: {
-                //             ...state.player4, active: true
-                //         },
-                //         player3: {
-                //             ...state.player3, active: false
-                //         },
-                //         player2: {
-                //             ...state.player2, active: false
-                //         },
-                //         player1: {
-                //             ...state.player1, active: false
-                //         },
-                //     }
-                // }
-                // if (action.player.name === 'fred') {
-                //     return {
-                //         ...state,
-                //         player3: {
-                //             ...state.player3, active: true
-                //         },
-                //         player4: {
-                //             ...state.player4, active: false
-                //         },
-                //         player2: {
-                //             ...state.player2, active: false
-                //         },
-                //         player1: {
-                //             ...state.player1, active: false
-                //         },
-                //     }
-                // }
-                // if (action.player.name === 'rory') {
-                //     return {
-                //         ...state,
-                //         player2: {
-                //             ...state.player2, active: true
-                //         },
-                //         player4: {
-                //             ...state.player4, active: false
-                //         },
-                //         player3: {
-                //             ...state.player3, active: false
-                //         },
-                //         player1: {
-                //             ...state.player1, active: false
-                //         },
-                //     }
-                // }
-                // if (action.player.name === 'andy') {
-                //     return {
-                //         ...state,
-                //         player1: {
-                //             ...state.player1, active: true
-                //         },
-                //         player4: {
-                //             ...state.player4, active: false
-                //         },
-                //         player2: {
-                //             ...state.player2, active: false
-                //         },
-                //         player3: {
-                //             ...state.player3, active: false
-                //         },
-                //     }
-
-                // }
-                // break;
             }
         }
+
+        // if (action.player.name === 'carlo') {
+        //     return {
+        //         ...state,
+        //         player4: {
+        //             ...state.player4, active: true
+        //         },
+        //         player3: {
+        //             ...state.player3, active: false
+        //         },
+        //         player2: {
+        //             ...state.player2, active: false
+        //         },
+        //         player1: {
+        //             ...state.player1, active: false
+        //         },
+        //     }
+        // }
+        // if (action.player.name === 'fred') {
+        //     return {
+        //         ...state,
+        //         player3: {
+        //             ...state.player3, active: true
+        //         },
+        //         player4: {
+        //             ...state.player4, active: false
+        //         },
+        //         player2: {
+        //             ...state.player2, active: false
+        //         },
+        //         player1: {
+        //             ...state.player1, active: false
+        //         },
+        //     }
+        // }
+        // if (action.player.name === 'rory') {
+        //     return {
+        //         ...state,
+        //         player2: {
+        //             ...state.player2, active: true
+        //         },
+        //         player4: {
+        //             ...state.player4, active: false
+        //         },
+        //         player3: {
+        //             ...state.player3, active: false
+        //         },
+        //         player1: {
+        //             ...state.player1, active: false
+        //         },
+        //     }
+        // }
+        // if (action.player.name === 'andy') {
+        //     return {
+        //         ...state,
+        //         player1: {
+        //             ...state.player1, active: true
+        //         },
+        //         player4: {
+        //             ...state.player4, active: false
+        //         },
+        //         player2: {
+        //             ...state.player2, active: false
+        //         },
+        //         player3: {
+        //             ...state.player3, active: false
+        //         },
+        //     }
+
+        // }
+        // break;
+        // }
 
         case 'reset-player-cards': {
             return {
@@ -204,14 +196,10 @@ export const betReducer = (state: AppState, action: any) => {
                 default:
                     break;
             }
-            return {
-                ...state,
-                player1: { ...state.player1, hand: [] },
-                player2: { ...state.player2, hand: [] },
-                player3: { ...state.player3, hand: [] },
-                player4: { ...state.player4, hand: [] },
-            }
+            break;
         }
+
+
 
         case 'clear': {
             return {

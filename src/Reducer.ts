@@ -17,6 +17,24 @@ export const betReducer = (state: AppState, action: any) => {
                 players: state.players.map(p => p.name === action.player.name ? { ...p, active: true } : { ...p, active: false })
             }
         }
+        case 'make-next-active': {
+            return {
+                ...state,
+                players: state.players.map(p => p.id + 1 === action.player.id + 1 ? { ...p, active: true } : { ...p, active: false })
+            }
+        }
+        case 'fold': {
+            return {
+                ...state,
+                players: state.players.map(p => p.name === action.player.name ? { ...p, active: false, folded: true, bet: 0 } : { ...p }),
+            }
+        }
+        case 'check': {
+            return {
+                ...state,
+                players: state.players.map(p => p.name === action.player.name ? { ...p, active: false, folded: true, bet: 0 } : { ...p }),
+            }
+        }
         case 'set-dealer': {
             return {
                 ...state,
@@ -30,7 +48,7 @@ export const betReducer = (state: AppState, action: any) => {
             }
         }
         case 'pay-bb': {
-            console.log(action.BB[0].name, state.players[2])
+            // console.log(action.BB[0].name, state.players[2])
             return {
                 ...state,
                 players: state.players.map(p => p.name === action.BB[0].name ? { ...p, bet: action.bigBlind, stack: p.stack - action.bigBlind } : { ...p }),

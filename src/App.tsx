@@ -92,7 +92,7 @@ const App = () => {
     dispatch({ type: 'payout', gameResult, players })
   }
 
-  console.log(gameResult.winners)
+  // console.log(gameResult.winners)
   const playGame = () => {
     shuffleandSet();
     payBlinds();

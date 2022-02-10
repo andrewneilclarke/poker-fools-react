@@ -8,56 +8,46 @@ export type CardFace = '🂲' | '🂳' | '🂴' | '🂵' | '🂶' | '🂷' | '�
 
 export type Hand = CardName[];
 
-export type Deck = CardName[]
-
-export interface Player {
-    name: string;
-    stack: number;
-    bet: number;
-    hand: Hand;
-    evaluatedHand?: {
-        handName: string;
-        handRank: number;
-        handType: number;
-        value: number;
-    };
-    dealer: boolean;
-    active: boolean;
-}
-
-export enum Gamestage {
-    // 'Waiting',
-    'Pre-flop',
-    'Flop',
-    'Turn',
-    'River',
-    'Showdown',
-}
-
-export enum PlayerStatus {
-    'active',
-    'sitting-out',
-    'vacated',
-}
+export type Deck = CardName[];
 
 export interface PlayerType {
-    hand: CardName[],
-    stack: number,
-    bet: number,
     name: string,
+    id: number,
+    stack: number,
+    hand: CardName[],
+    bet: number,
     dealer: boolean,
     active: boolean,
     bigBlind: boolean,
     smallBlind: boolean,
     folded: boolean,
     allin: boolean,
+    evaluatedHand?: {
+        handName: string;
+        handRank: number;
+        handType: number;
+        value: number;
+    };
 }
 
+export enum Gamestage {
+    // 'Waiting',
+    Preflop = 0,
+    Flop = 1,
+    Turn = 2,
+    River = 3,
+    Showdown = 4
+}
+
+export enum PlayerStatus {
+    active,
+    sittingout,
+    vacated,
+}
+
+
 export interface AppState {
-    player1: PlayerType,
-    player2: PlayerType,
-    player3: PlayerType,
-    player4: PlayerType,
+    players: PlayerType[]
     pot: number
 }
 
@@ -80,7 +70,7 @@ export interface RankingResult {
 }
 
 export type Action =
-    | { type: 'submit-bet', betAmount: string, player: Player }
-    | { type: 'make-active', player: Player }
+    | { type: 'submit-bet', betAmount: string, player: PlayerType }
+    | { type: 'make-active', player: PlayerType }
     | { type: 'reset-player-cards' }
     | { type: 'clear' }

@@ -16,7 +16,6 @@
 button {
   background: black;
   border: none;
-  padding: 6px 12px;
   margin-bottom: 0.8rem;
   border-radius: 9px;
   color: rgb(185, 184, 184);
@@ -55,23 +54,19 @@ button:hover {
   color: pink;
 }
 
-.player-info {
-  text-transform: capitalize;
-  font-size: x-small;
-  color: rgb(207, 206, 206);
-  background-color: #666;
-  width: 70%;
-  border-radius: 8px;
-  padding: 2px;
+.name-and-stack {
+  display: flex;
+  justify-content: space-around;
+  align-items:
 }
-
-#name {
+.name-and-stack .name {
   text-decoration: underline;
 }
 #player {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-around;
   /* margin: 10px; */
   background-color: rgba(255, 255, 255, 0.353);
   padding: 0.2rem;
@@ -93,28 +88,6 @@ button:hover {
 }
 .carlo {
   grid-row: 2/3;
-}
-
-.player-details {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content:flex-start;
-  align-items: center;
-}
-.player-details button {
-  font-size: large;
-  margin-bottom: 0.5rem;
-  /* display: flex;
-  justify-content: space-between; */
-}
-.player-details p {
-  margin-bottom: 0.5rem;
- 
-}
-.player-buttons {
-  /* display: flex;
-  justify-content: space-evenly; */
 }
 
 .cards {

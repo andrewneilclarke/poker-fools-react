@@ -1,216 +1,81 @@
-import { AppState, Action } from './Interfaces'
+import { AppState } from './Interfaces'
 
-export const betReducer = (state: any, action: any) => {
+
+export const betReducer = (state: AppState, action: any) => {
     switch (action.type) {
         case 'submit-bet': {
-            switch (action.player.name) {
-                case 'carlo': {
-                    return {
-                        ...state,
-                        player4: { ...state.player4, bet: state.player4.bet + action.betAmount, stack: state.player4.stack - action.betAmount },
-                        pot: state.pot + action.betAmount
-                    }
-                }
-                case 'andy': {
-                    return {
-                        ...state,
-                        player1: { ...state.player1, bet: state.player1.bet + action.betAmount, stack: state.player1.stack - action.betAmount },
-                        pot: state.pot + action.betAmount
-                    }
-                }
-                case 'rory': {
-                    return {
-                        ...state,
-                        player2: { ...state.player2, bet: state.player2.bet + action.betAmount, stack: state.player2.stack - action.betAmount },
-                        pot: state.pot + action.betAmount
-                    }
-                }
-                case 'fred': {
-                    return {
-                        ...state,
-                        player3: { ...state.player3, bet: state.player3.bet + action.betAmount, stack: state.player3.stack - action.betAmount },
-                        pot: state.pot + action.betAmount
-                    }
-                }
-                default:
-                    break;
+            return {
+                ...state,
+                players: state.players.map(p => p.name === action.player.name ? { ...p, bet: p.bet + action.betAmount, stack: p.stack - action.betAmount } : { ...p }),
+                pot: state.pot + action.betAmount
             }
-            break;
         }
 
         case 'make-active': {
-            // console.log(state.players.map(p => p.name === action.player.name))
-            console.log(action.player.name)
-            // console.log(state.players.map(player => {
-            //     if (player.name === action.player.name) {
-            //         return { ...player, active: true }
-            //     }
-            // }))
-
-
-            // const selectedPlayerArr = Object.entries(state).filter(arr => arr[1].name === action.player.name)
-            // const selectedPlayerObj = selectedPlayerArr[0]
-            // const selectedPlayerName = selectedPlayerObj[0]
-            // const sName = action.player.name
-            // console.log(selectedPlayerObj)
-
-
             return {
                 ...state,
-                players: state.players.map((p, name) => p.name === action.player.name ? { ...p, active: true } : { ...p, active: false })
-                // .map((p, name) => name !== action.player.name ? { ...p, active: false } : p)
-
-                // state.players.map(p => p.name === action.player.name ? p.active : true)
-                // .map(p => p.name !== action.player.name ? p.active : false)
-                // state.players.map(p => p.name === action.player.name:
-                // players: ...players.map(p => p.name === action.player.name, active: true )
-
-                // player4: {
-                //     ...state.player4, active: false
-                // },
-                // player3: {
-                //     ...state.player3, active: false
-                // },
-                // player2: {
-                //     ...state.player2, active: false
-                // },
-                // player1: {
-                //     ...state.player1, active: false
-                // },
+                players: state.players.map(p => p.name === action.player.name ? { ...p, active: true } : { ...p, active: false })
+            }
+        }
+        case 'set-dealer': {
+            return {
+                ...state,
+                players: state.players.map(p => p.id === action.dealerID ? { ...p, dealer: true } : { ...p, dealer: false })
+            }
+        }
+        case 'set-bb': {
+            return {
+                ...state,
+                players: state.players.map(p => p.id + 2 === action.dealerID ? { ...p, bigBlind: true } : { ...p, bigBlind: false })
+            }
+        }
+        case 'pay-bb': {
+            console.log(action.BB[0].name, state.players[2])
+            return {
+                ...state,
+                players: state.players.map(p => p.name === action.BB[0].name ? { ...p, bet: action.bigBlind, stack: p.stack - action.bigBlind } : { ...p }),
+                pot: state.pot + action.bigBlind
+            }
+        }
+        case 'set-sb': {
+            return {
+                ...state,
+                players: state.players.map(p => p.id + 1 === action.dealerID ? { ...p, smallBlind: true } : { ...p, smallBlind: false })
+            }
+        }
+        case 'pay-sb': {
+            return {
+                ...state,
+                players: state.players.map(p => p.name === action.SB[0].name ? { ...p, bet: action.smallBlind, stack: p.stack - action.smallBlind } : { ...p }),
+                pot: state.pot + action.smallBlind
             }
         }
 
-        // if (action.player.name === 'carlo') {
-        //     return {
-        //         ...state,
-        //         player4: {
-        //             ...state.player4, active: true
-        //         },
-        //         player3: {
-        //             ...state.player3, active: false
-        //         },
-        //         player2: {
-        //             ...state.player2, active: false
-        //         },
-        //         player1: {
-        //             ...state.player1, active: false
-        //         },
-        //     }
-        // }
-        // if (action.player.name === 'fred') {
-        //     return {
-        //         ...state,
-        //         player3: {
-        //             ...state.player3, active: true
-        //         },
-        //         player4: {
-        //             ...state.player4, active: false
-        //         },
-        //         player2: {
-        //             ...state.player2, active: false
-        //         },
-        //         player1: {
-        //             ...state.player1, active: false
-        //         },
-        //     }
-        // }
-        // if (action.player.name === 'rory') {
-        //     return {
-        //         ...state,
-        //         player2: {
-        //             ...state.player2, active: true
-        //         },
-        //         player4: {
-        //             ...state.player4, active: false
-        //         },
-        //         player3: {
-        //             ...state.player3, active: false
-        //         },
-        //         player1: {
-        //             ...state.player1, active: false
-        //         },
-        //     }
-        // }
-        // if (action.player.name === 'andy') {
-        //     return {
-        //         ...state,
-        //         player1: {
-        //             ...state.player1, active: true
-        //         },
-        //         player4: {
-        //             ...state.player4, active: false
-        //         },
-        //         player2: {
-        //             ...state.player2, active: false
-        //         },
-        //         player3: {
-        //             ...state.player3, active: false
-        //         },
-        //     }
-
-        // }
-        // break;
-        // }
+        case 'call': {
+            return {
+                ...state,
+                players: state.players.map(p => p.name === action.player.name ? { ...p, bet: action.bigBlind, stack: p.stack - action.bigBlind } : { ...p }),
+                pot: state.pot + action.bigBlind
+            }
+        }
 
         case 'reset-player-cards': {
             return {
                 ...state,
-                player1: { ...state.player1, hand: [] },
-                player2: { ...state.player2, hand: [] },
-                player3: { ...state.player3, hand: [] },
-                player4: { ...state.player4, hand: [] },
+                players: state.players.map(p => p.hand && { ...p, hand: [] })
+
             }
         }
-        case 'call': {
-            console.log('call')
-            switch (action.player.name) {
-                case 'carlo': {
-                    return {
-                        ...state,
-                        player4: { ...state.player4, bet: action.bigBlind, stack: state.player4.stack - action.bigBlind },
-                        pot: state.pot + action.bigBlind
-                    }
-                }
-                case 'andy': {
-                    return {
-                        ...state,
-                        player1: { ...state.player1, bet: action.bigBlind, stack: state.player1.stack - action.bigBlind },
-                        pot: state.pot + action.bigBlind
-                    }
-                }
-                case 'rory': {
-                    console.log(action.betAmount, action.player, action.bigBlind)
-                    return {
-                        ...state,
-                        player2: { ...state.player2, bet: action.bigBlind, stack: state.player2.stack - action.bigBlind },
-                        pot: state.pot + action.bigBlind
-                    }
-                }
-                case 'fred': {
-                    return {
-                        ...state,
-                        player3: { ...state.player3, bet: action.bigBlind, stack: state.player3.stack - action.bigBlind },
-                        pot: state.pot + action.bigBlind
-                    }
-                }
-                default:
-                    break;
-            }
-            break;
-        }
-
-
-
-        case 'clear': {
+        case 'payout': {
             return {
                 ...state,
-                bet: 0,
+                //     players: state.players.map(p => getWinnerName(action.gameResult, action.players) === (p.name) ? { ...p, stack: p.stack + state.pot } : { ...p }),
+                //     pot: 0,
             };
         }
 
         default:
             break;
-
     }
 
     throw Error("No Action provided")

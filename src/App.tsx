@@ -13,26 +13,18 @@ import Card from './components/Card';
 import Table from './components/Table';
 import Gameinfo from './components/Gameinfo';
 
-
 const initialState: AppState = {
-  player1: { hand: [], stack: 300, bet: 0, name: 'andy', dealer: true, bigBlind: false, smallBlind: false, active: false, folded: false, allin: false },
-  player2: { hand: [], stack: 300, bet: 0, name: 'rory', dealer: false, bigBlind: false, smallBlind: false, active: true, folded: false, allin: false },
-  player3: { hand: [], stack: 300, bet: 0, name: 'fred', dealer: false, bigBlind: true, smallBlind: false, active: false, folded: false, allin: false },
-  player4: { hand: [], stack: 300, bet: 0, name: 'carlo', dealer: false, bigBlind: false, smallBlind: true, active: false, folded: false, allin: false },
-  pot: 0
-}
-const initialState2: any = {
   players: [
-    { hand: [], stack: 300, bet: 0, name: 'andy', dealer: true, bigBlind: false, smallBlind: false, active: false, folded: false, allin: false },
-    { hand: [], stack: 300, bet: 0, name: 'rory', dealer: false, bigBlind: false, smallBlind: false, active: true, folded: false, allin: false },
-    { hand: [], stack: 300, bet: 0, name: 'fred', dealer: false, bigBlind: true, smallBlind: false, active: false, folded: false, allin: false },
-    { hand: [], stack: 300, bet: 0, name: 'carlo', dealer: false, bigBlind: false, smallBlind: true, active: false, folded: false, allin: false },
+    { hand: [], stack: 300, id: 1, bet: 0, name: 'andy', dealer: true, bigBlind: false, smallBlind: false, active: false, folded: false, allin: false },
+    { hand: [], stack: 300, id: 2, bet: 0, name: 'rory', dealer: false, bigBlind: false, smallBlind: true, active: false, folded: false, allin: false },
+    { hand: [], stack: 300, id: 3, bet: 0, name: 'fred', dealer: false, bigBlind: true, smallBlind: false, active: false, folded: false, allin: false },
+    { hand: [], stack: 300, id: 4, bet: 0, name: 'carlo', dealer: false, bigBlind: false, smallBlind: false, active: true, folded: false, allin: false },
   ],
-  pot: 0
+  pot: 0,
 }
 
 const App = () => {
-  const [state, dispatch] = useReducer(betReducer, initialState2)
+  const [state, dispatch] = useReducer(betReducer, initialState)
   const players: PlayerType[] = state.players
   const [bigBlind, setBigBlind] = useState<number>(20)
   const [table, setTable] = useState<CardName[]>([])
@@ -43,6 +35,7 @@ const App = () => {
   let [liveDeck, setLiveDeck] = useState<Deck>([...cardNames])
   const [flipped, setFlipped] = useState<boolean>(true)
   const [flipTable, setFlipTable] = useState<boolean>(true)
+  const [dealerID, setDealerID] = useState(1)
   const [gameResult, setGameResult] = useState<RankingResult>({
     winners: [],
     players: []
@@ -55,7 +48,6 @@ const App = () => {
   const getDeck = () => Object.keys(MyDeck) as Array<CardFace>;
 
   useEffect(() => {
-
     // WHILE ACTIVE PLAYERS > 1
     playGame();
     // FIRST ROUND OF BETS
@@ -65,12 +57,45 @@ const App = () => {
     // dealRiver()
     // FOURTH ROUND OF BETS
     // SHOW DOWN (SHOW CARDS) => FETCH WINNER (& DISPLAY) => PAYOUT POT
-    // nextGame()
+
     // console.log('end')
   }, [])
 
+  const makeNextActive = () => {
+
+  }
+  const payBlinds = () => {
+    const SB = players.filter(p => p.smallBlind)
+    const BB = players.filter(p => p.bigBlind)
+    dispatch({ type: 'pay-sb', SB, smallBlind })
+    dispatch({ type: 'pay-bb', BB, bigBlind })
+  }
+
+  const rotateDealer = () => {
+    const currentDealer = players.filter(p => {
+      if (p.dealer) {
+        console.log(p.id)
+      }
+    })
+  }
+
+  // p.dealer ? p.id )
+  // console.log(currentDealer)
+  // if (dealerID === 1) {
+  //   dispatch({ type: 'set-dealer', dealerID })
+  //   dispatch({ type: 'set-sb', dealerID })
+  //   dispatch({ type: 'set-bb', dealerID })
+  // }
+
+
+  const payoutWinner = () => {
+    dispatch({ type: 'payout', gameResult, players })
+  }
+
+  console.log(gameResult.winners)
   const playGame = () => {
     shuffleandSet();
+    payBlinds();
     // create DEAL PLAYERS FUNCTION
     dealFlop();
     // // FIRST ROUND OF BETS
@@ -78,6 +103,8 @@ const App = () => {
     // dealTurn();
     // dealRiver();
     // getResult();
+    payoutWinner();
+    nextGame()
   }
 
   const shuffleandSet = () => {
@@ -90,14 +117,6 @@ const App = () => {
     if (players[0].hand.length === 0) {
       players.forEach(p => p.hand.push(liveDeck.pop()))
       players.forEach(p => p.hand.push(liveDeck.pop()))
-      // player1.hand.push(liveDeck.pop())
-      // player2.hand.push(liveDeck.pop())
-      // player3.hand.push(liveDeck.pop())
-      // player4.hand.push(liveDeck.pop())
-      // player1.hand.push(liveDeck.pop())
-      // player2.hand.push(liveDeck.pop())
-      // player3.hand.push(liveDeck.pop())
-      // player4.hand.push(liveDeck.pop())
       table.push(liveDeck.pop())
       table.push(liveDeck.pop())
       table.push(liveDeck.pop())
@@ -112,7 +131,6 @@ const App = () => {
     table.push(liveDeck.pop())
     setLiveDeck([...liveDeck])
     setGameOver(false)
-    return { liveDeck, players, burnt }
   }
 
   const dealRiver = () => {
@@ -121,13 +139,11 @@ const App = () => {
     table.push(liveDeck.pop())
     setLiveDeck([...liveDeck])
     setGameOver(false)
-    return { liveDeck, players, burnt }
   }
 
   const getResult = async () => {
     if (table.length === 5) {
       const r = await fetchRankingResult()
-      console.log(r)
       setGameResult(r)
     }
   }
@@ -203,6 +219,7 @@ const App = () => {
       {/* DISPLAY TABLE / PLAYERS */}
 
       <Table table={table} currentGameStage={currentGameStage} dispatch={dispatch} gameResult={gameResult} players={players} pot={state.pot} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} getCardFace={getCardFace} gameOver={gameOver} bigBlind={bigBlind} smallBlind={smallBlind} flipTable={flipTable} />
+      <button onClick={rotateDealer}>Rotate Dealer</button>
 
       {/* GAME INFO / STATS DISPLAY */}
       <Gameinfo bigBlind={bigBlind} currentGameStage={currentGameStage} pot={state.pot} smallBlind={smallBlind} gameResult={gameResult} players={players} myError={myError} />

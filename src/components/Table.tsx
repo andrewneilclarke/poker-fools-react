@@ -23,7 +23,6 @@ interface Props {
 }
 
 const Table: React.FC<Props> = ({ table, players, pot, gameResult, dispatch, getCardFace, cardBack, flipped, setFlipped, gameOver, currentGameStage, smallBlind, bigBlind, flipTable }) => {
-    console.log(players)
     return (
         <div className="table-container">
             <div className="table-and-players">

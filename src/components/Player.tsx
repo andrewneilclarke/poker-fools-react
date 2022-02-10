@@ -1,7 +1,8 @@
-import { useState } from 'react'
 import { MdPerson } from "react-icons/md";
+import Button from 'react-bootstrap/Button';
 import { PlayerType } from '../Interfaces'
 import Card from "./Card"
+import PlayerControls from './PlayerControls';
 
 interface Props {
     player: PlayerType,
@@ -16,53 +17,24 @@ interface Props {
 }
 
 const Player: React.FC<Props> = ({ player, players, getCardFace, cardBack, flipped, setFlipped, dispatch, smallBlind, bigBlind }) => {
-    const [betAmount, setBetAmount] = useState(0)
     return (
-
         <div className={player.name} id="player" onClick={() => dispatch({ type: 'make-active', player, players })}>
+            <MdPerson style={{ height: "4em", width: "4em" }} /> {player.dealer && 'D'}
+            <div className="name-and-stack">
+                <p className="name" id="name">{player.name}</p>
+                <p className="stack">{player.stack}</p>
+            </div>
+
+
+            {player.bigBlind && 'BB'} {player.smallBlind && 'SB'}
+
             <div className="cards">
                 {player.hand.map(card => (
                     <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />))
                 }
             </div>
-            <MdPerson style={{ height: "5em", width: "5em" }} />
-            <h4 className="player-info" id="name">{player.name} {player.dealer && 'D'} {player.bigBlind && 'BB'} {player.smallBlind && 'SB'} <p className="stack">{player.stack}</p></h4>
 
-
-            <div className="player-details">
-                {/* <p>{JSON.stringify(player.hand)}</p> */}
-
-                {/* {player.active && (
-                    <>
-                        <div className="player-buttons">
-                            <button onClick={() => setBetAmount(betAmount + smallBlind)}>+</button>
-                            <button onClick={() => {
-                                if (betAmount > 0) {
-                                    setBetAmount(betAmount - smallBlind)
-                                }
-                            }
-                            }>-</button>
-                            {player.bet < bigBlind && <button onClick={() => dispatch({ type: 'call', betAmount, player, bigBlind })}>Call {bigBlind}</button>}
-                            <form onSubmit={(e) => {
-                                e.preventDefault();
-                                dispatch({ type: 'submit-bet', betAmount, player });
-                                setBetAmount(0)
-                                console.log(betAmount, player)
-                            }}>
-                                {betAmount > 0 && <button type='submit' className='submit'>Bet {betAmount}</button>
-
-                                }
-                                {betAmount}
-                                {player.bet}
-                            </form>
-
-                        </div>
-
-                    </>
-                )
-                } */}
-            </div>
-
+            {player.active && <PlayerControls bigBlind={bigBlind} dispatch={dispatch} player={player} players={players} setFlipped={setFlipped} smallBlind={smallBlind} />}
         </div>
 
     )

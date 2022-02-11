@@ -38,13 +38,13 @@ export const betReducer = (state: AppState, action: any) => {
         case 'set-dealer': {
             return {
                 ...state,
-                players: state.players.map(p => p.id === action.dealerID ? { ...p, dealer: true } : { ...p, dealer: false })
+                players: state.players.map(p => p.id === action.newDealerID ? { ...p, dealer: true } : { ...p, dealer: false }),
             }
         }
         case 'set-bb': {
             return {
                 ...state,
-                players: state.players.map(p => p.id + 2 === action.dealerID ? { ...p, bigBlind: true } : { ...p, bigBlind: false })
+                players: state.players.map(p => p.id === action.newBBID ? { ...p, bigBlind: true } : { ...p, bigBlind: false })
             }
         }
         case 'pay-bb': {
@@ -58,7 +58,7 @@ export const betReducer = (state: AppState, action: any) => {
         case 'set-sb': {
             return {
                 ...state,
-                players: state.players.map(p => p.id + 1 === action.dealerID ? { ...p, smallBlind: true } : { ...p, smallBlind: false })
+                players: state.players.map(p => p.id === action.newSBID ? { ...p, smallBlind: true } : { ...p, smallBlind: false })
             }
         }
         case 'pay-sb': {

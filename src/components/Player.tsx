@@ -18,24 +18,29 @@ interface Props {
 
 const Player: React.FC<Props> = ({ player, players, getCardFace, cardBack, flipped, setFlipped, dispatch, smallBlind, bigBlind }) => {
     return (
-        <div className={player.name} id="player" onClick={() => dispatch({ type: 'make-active', player, players })}>
-            <MdPerson style={{ height: "4em", width: "4em" }} /> {player.dealer && 'D'}
-            <div className="name-and-stack">
-                <p className="name" id="name">{player.name}</p>
-                <p className="stack">{player.stack}</p>
+        <>
+
+
+            <div className={player.name} id="player" onClick={() => dispatch({ type: 'make-active', player, players })}>
+                {player.bet > 0 && <p>{player.bet}</p>}
+                <MdPerson style={{ height: "4em", width: "4em" }} /> {player.dealer && 'D'}
+                <div className="name-and-stack">
+                    <p className="name" id="name">{player.name}</p>
+                    <p className="stack">{player.stack}</p>
+                </div>
+
+                {player.bigBlind && 'BB'} {player.smallBlind && 'SB'}
+
+                <div className="cards">
+                    {player.hand.map(card => (
+                        <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />))
+                    }
+                </div>
+
+                {player.active && <PlayerControls bigBlind={bigBlind} dispatch={dispatch} player={player} players={players} setFlipped={setFlipped} smallBlind={smallBlind} />}
             </div>
 
-
-            {player.bigBlind && 'BB'} {player.smallBlind && 'SB'}
-
-            <div className="cards">
-                {player.hand.map(card => (
-                    <Card key={card} card={card} getCardFace={getCardFace} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} />))
-                }
-            </div>
-
-            {player.active && <PlayerControls bigBlind={bigBlind} dispatch={dispatch} player={player} players={players} setFlipped={setFlipped} smallBlind={smallBlind} />}
-        </div>
+        </>
 
     )
 }

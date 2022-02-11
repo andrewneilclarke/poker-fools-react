@@ -27,18 +27,18 @@ const PlayerControls: React.FC<Props> = ({ bigBlind, dispatch, player, players, 
             {/* CALL */}
             {player.bet < bigBlind && <button onClick={() => dispatch({ type: 'call', betAmount, player, bigBlind })}>Call {bigBlind}</button>}
             {/* RAISE */}
-            <button onClick={() => setBetAmount((prev) => prev + smallBlind)}>Raise {smallBlind}</button>
-
+            <button onClick={() => setBetAmount((prev) => betAmount + smallBlind)}>Raise {smallBlind}</button>
+            {/* REDUCE BET */}
             <button onClick={reduceBet}>-</button>
-            <form onSubmit={(e) => {
-                e.preventDefault();
+            {/* SUBMIT (FINAL) */}
+            {betAmount > 0 && <button onClick={() => {
                 dispatch({ type: 'submit-bet', betAmount, player });
                 setBetAmount(0)
+                // makeNextActive()
             }}>
-                {betAmount > 0 && <button type='submit' className='submit'>OK {betAmount}</button>}
-                {/* {<p>{betAmount}</p>} */}
-                {<p>{player.bet}</p>}
-            </form>
+                OK {betAmount}</button>}
+            {/* {betAmount > 0 && <button type='submit' className='submit'>OK {betAmount}</button>} */}
+            {<p>{player.bet}</p>}
 
         </div>
     </div>

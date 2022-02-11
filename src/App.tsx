@@ -72,11 +72,43 @@ const App = () => {
   }
 
   const rotateDealer = () => {
-    const currentDealer = players.filter(p => {
-      if (p.dealer) {
-        console.log(p.id)
-      }
-    })
+    let newDealerID: number;
+    const currentDealer = players.filter(p => p.dealer)
+    // console.log(currentDealer[0].id)
+    if (currentDealer[0].id > 0 && currentDealer[0].id < 4) {
+      newDealerID = currentDealer[0].id + 1
+    } else if (currentDealer[0].id === 4) {
+      newDealerID = 1
+    }
+    // console.log(newDealerID)
+    dispatch({ type: 'set-dealer', newDealerID })
+  }
+
+  const rotateBB = () => {
+    let newBBID: number;
+    const currentBB = players.filter(p => p.bigBlind)
+    if (currentBB[0].id > 0 && currentBB[0].id < 4) {
+      newBBID = currentBB[0].id + 1
+    } else if (currentBB[0].id === 4) {
+      newBBID = 1
+    }
+    dispatch({ type: 'set-bb', newBBID })
+  }
+  const rotateSB = () => {
+    let newSBID: number;
+    const currentSB = players.filter(p => p.smallBlind)
+    if (currentSB[0].id > 0 && currentSB[0].id < 4) {
+      newSBID = currentSB[0].id + 1
+    } else if (currentSB[0].id === 4) {
+      newSBID = 1
+    }
+    dispatch({ type: 'set-sb', newSBID })
+  }
+
+  const rotatePlayers = () => {
+    rotateDealer()
+    rotateSB()
+    rotateBB()
   }
 
   // p.dealer ? p.id )
@@ -219,7 +251,7 @@ const App = () => {
       {/* DISPLAY TABLE / PLAYERS */}
 
       <Table table={table} currentGameStage={currentGameStage} dispatch={dispatch} gameResult={gameResult} players={players} pot={state.pot} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} getCardFace={getCardFace} gameOver={gameOver} bigBlind={bigBlind} smallBlind={smallBlind} flipTable={flipTable} />
-      <button onClick={rotateDealer}>Rotate Dealer</button>
+      <button onClick={rotatePlayers}>Rotate Dealer</button>
 
       {/* GAME INFO / STATS DISPLAY */}
       <Gameinfo bigBlind={bigBlind} currentGameStage={currentGameStage} pot={state.pot} smallBlind={smallBlind} gameResult={gameResult} players={players} myError={myError} />

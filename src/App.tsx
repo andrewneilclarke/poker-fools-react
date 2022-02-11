@@ -2,6 +2,7 @@ import './App.css';
 import { v4 as uuid } from 'uuid';
 import { useState, useEffect, useReducer } from 'react';
 import { betReducer } from './Reducer';
+
 // Variables
 import { MyDeck, cardNames, cardBack } from './Deck'
 // Functions
@@ -13,10 +14,11 @@ import Card from './components/Card';
 import Table from './components/Table';
 import Gameinfo from './components/Gameinfo';
 
+
 const initialState: AppState = {
   players: [
     { hand: [], stack: 300, id: 1, bet: 0, name: 'andy', dealer: true, bigBlind: false, smallBlind: false, active: false, folded: false, allin: false },
-    { hand: [], stack: 300, id: 2, bet: 0, name: 'rory', dealer: false, bigBlind: false, smallBlind: true, active: false, folded: false, allin: false },
+    { hand: [], stack: 300, id: 2, bet: 0, name: 'rory', dealer: false, bigBlind: false, smallBlind: true, active: false, folded: true, allin: false },
     { hand: [], stack: 300, id: 3, bet: 0, name: 'fred', dealer: false, bigBlind: true, smallBlind: false, active: false, folded: false, allin: false },
     { hand: [], stack: 300, id: 4, bet: 0, name: 'carlo', dealer: false, bigBlind: false, smallBlind: false, active: true, folded: false, allin: false },
   ],
@@ -62,8 +64,16 @@ const App = () => {
   }, [])
 
   const makeNextActive = () => {
-
+    let nextActiveID: number;
+    const currentActive = players.filter(p => p.active)
+    if (currentActive[0].id > 0 && currentActive[0].id < 4) {
+      nextActiveID = currentActive[0].id + 1
+    } else if (currentActive[0].id === 4) {
+      nextActiveID = 1
+    }
+    dispatch({ type: 'make-next-active', nextActiveID })
   }
+
   const payBlinds = () => {
     const SB = players.filter(p => p.smallBlind)
     const BB = players.filter(p => p.bigBlind)
@@ -146,6 +156,7 @@ const App = () => {
 
   const dealFlop = () => {
     setCurrentGameStage(Gamestage[1])
+    // PlayCardsound()
     if (players[0].hand.length === 0) {
       players.forEach(p => p.hand.push(liveDeck.pop()))
       players.forEach(p => p.hand.push(liveDeck.pop()))
@@ -252,6 +263,7 @@ const App = () => {
 
       <Table table={table} currentGameStage={currentGameStage} dispatch={dispatch} gameResult={gameResult} players={players} pot={state.pot} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} getCardFace={getCardFace} gameOver={gameOver} bigBlind={bigBlind} smallBlind={smallBlind} flipTable={flipTable} />
       <button onClick={rotatePlayers}>Rotate Dealer</button>
+      <button onClick={makeNextActive}>Make Next Active</button>
 
       {/* GAME INFO / STATS DISPLAY */}
       <Gameinfo bigBlind={bigBlind} currentGameStage={currentGameStage} pot={state.pot} smallBlind={smallBlind} gameResult={gameResult} players={players} myError={myError} />

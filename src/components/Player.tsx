@@ -21,7 +21,7 @@ const Player: React.FC<Props> = ({ player, players, getCardFace, cardBack, flipp
         <>
 
 
-            <div className={player.name} id="player" onClick={() => dispatch({ type: 'make-active', player, players })}>
+            <div className={player.name} id={player.folded ? "player folded" : "player"} onClick={() => dispatch({ type: 'make-active', player, players })}>
                 {player.bet > 0 && <p>{player.bet}</p>}
                 <MdPerson style={{ height: "4em", width: "4em" }} /> {player.dealer && 'D'}
                 <div className="name-and-stack">

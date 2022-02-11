@@ -74,6 +74,19 @@ button:hover {
   width: 11.5rem;
   border-radius: 12px; 
 }
+#player\ folded {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  /* margin: 10px; */
+  background-color: rgba(255, 255, 255, 0);
+  color: rgba(0, 0, 0, 0.753);
+  padding: 0.2rem;
+  height: 13.5rem;
+  width: 11.5rem;
+  border-radius: 12px; 
+}
 
 .andy {
   grid-column: 2/3;

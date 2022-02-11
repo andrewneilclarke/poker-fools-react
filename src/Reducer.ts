@@ -14,13 +14,13 @@ export const betReducer = (state: AppState, action: any) => {
         case 'make-active': {
             return {
                 ...state,
-                players: state.players.map(p => p.name === action.player.name ? { ...p, active: true } : { ...p, active: false })
+                players: state.players.map(p => p.name === action.player.name && !p.folded ? { ...p, active: true } : { ...p, active: false })
             }
         }
         case 'make-next-active': {
             return {
                 ...state,
-                players: state.players.map(p => p.id + 1 === action.player.id + 1 ? { ...p, active: true } : { ...p, active: false })
+                players: state.players.map(p => p.id === action.nextActiveID && !p.folded ? { ...p, active: true } : { ...p, active: false })
             }
         }
         case 'fold': {

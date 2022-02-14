@@ -39,7 +39,7 @@ export const betReducer = (state: AppState, action: any) => {
         // case 'remove-folded-player': {
         //     return {
         //         ...state,
-        //         players: state.players.filter(p => !p.folded),
+        //         players: state.players.filter(p => !p.folded ? { ...p } : {}),
         //     }
         // }
         case 'check': {
@@ -51,13 +51,13 @@ export const betReducer = (state: AppState, action: any) => {
         case 'set-dealer': {
             return {
                 ...state,
-                players: state.players.map(p => p.id === action.newDealerID ? { ...p, dealer: true } : { ...p, dealer: false }),
+                players: action.currentPlayers.map(p => p.id === action.newDealerID ? { ...p, dealer: true } : { ...p, dealer: false }),
             }
         }
         case 'set-bb': {
             return {
                 ...state,
-                players: state.players.map(p => p.id === action.newBBID ? { ...p, bigBlind: true } : { ...p, bigBlind: false })
+                players: action.currentPlayers.map(p => p.id === action.newBBID ? { ...p, bigBlind: true } : { ...p, bigBlind: false })
             }
         }
         case 'pay-bb': {
@@ -71,7 +71,7 @@ export const betReducer = (state: AppState, action: any) => {
         case 'set-sb': {
             return {
                 ...state,
-                players: state.players.map(p => p.id === action.newSBID ? { ...p, smallBlind: true } : { ...p, smallBlind: false })
+                players: action.currentPlayers.map(p => p.id === action.newSBID ? { ...p, smallBlind: true } : { ...p, smallBlind: false })
             }
         }
         case 'pay-sb': {

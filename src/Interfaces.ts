@@ -21,6 +21,7 @@ export interface PlayerType {
     bigBlind: boolean,
     smallBlind: boolean,
     folded: boolean,
+    sittingOut: boolean
     allin: boolean,
     evaluatedHand?: {
         handName: string;

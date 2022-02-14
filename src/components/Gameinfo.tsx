@@ -18,7 +18,7 @@ const Gameinfo: React.FC<Props> = ({ currentGameStage, bigBlind, smallBlind, pot
             <p>Stage: {currentGameStage}</p>
             <p>Blinds: {`${bigBlind} / ${smallBlind}`}</p>
             <p>Current Pot: {pot}</p>
-            {gameResult.winners.length === 1 && getWinnerName(gameResult, players) !== undefined &&
+            {gameResult.winners !== [] && gameResult.winners.length === 1 && getWinnerName(gameResult, players) !== undefined &&
                 <p className="winner">{`${getWinnerName(gameResult, players)} wins with ${formatWinnerHand(gameResult.winners[0].result)} ${gameResult.winners[0].hand}`}</p>
             }
             {myError && <p>{myError}</p>}

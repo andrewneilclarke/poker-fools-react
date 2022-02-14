@@ -17,10 +17,10 @@ import Gameinfo from './components/Gameinfo';
 
 const initialState: AppState = {
   players: [
-    { hand: [], stack: 300, id: 1, bet: 0, name: 'andy', dealer: true, bigBlind: false, smallBlind: false, active: false, folded: false, allin: false },
-    { hand: [], stack: 300, id: 2, bet: 0, name: 'rory', dealer: false, bigBlind: false, smallBlind: true, active: false, folded: false, allin: false },
-    { hand: [], stack: 300, id: 3, bet: 0, name: 'fred', dealer: false, bigBlind: true, smallBlind: false, active: false, folded: false, allin: false },
-    { hand: [], stack: 300, id: 4, bet: 0, name: 'carlo', dealer: false, bigBlind: false, smallBlind: false, active: true, folded: false, allin: false },
+    { hand: [], stack: 300, id: 1, bet: 0, name: 'andy', dealer: true, bigBlind: false, smallBlind: false, active: false, folded: false, allin: false, sittingOut: false },
+    { hand: [], stack: 300, id: 2, bet: 0, name: 'rory', dealer: false, bigBlind: false, smallBlind: true, active: false, folded: false, allin: false, sittingOut: false },
+    { hand: [], stack: 300, id: 3, bet: 0, name: 'fred', dealer: false, bigBlind: true, smallBlind: false, active: false, folded: false, allin: false, sittingOut: false },
+    { hand: [], stack: 300, id: 4, bet: 0, name: 'carlo', dealer: false, bigBlind: false, smallBlind: false, active: true, folded: false, allin: false, sittingOut: false },
   ],
   pot: 0,
   rankingResult: {
@@ -47,7 +47,7 @@ const App = () => {
   // Calculate smallblind
   const smallBlind = bigBlind / 2
 
-  const getDeck = () => Object.keys(MyDeck) as Array<CardFace>;
+  // const getDeck = () => Object.keys(MyDeck) as Array<CardFace>;
 
   useEffect(() => {
     // WHILE ACTIVE PLAYERS > 1
@@ -73,6 +73,7 @@ const App = () => {
   const rotateDealer = () => {
     let newDealerID: number;
     const currentDealer = players.filter(p => p.dealer)
+    const currentPlayers: PlayerType[] = players.filter(p => !p.folded)
     // console.log(currentDealer[0].id)
     if (currentDealer[0].id > 0 && currentDealer[0].id < 4) {
       newDealerID = currentDealer[0].id + 1
@@ -80,28 +81,30 @@ const App = () => {
       newDealerID = 1
     }
     // console.log(newDealerID)
-    dispatch({ type: 'set-dealer', newDealerID })
+    dispatch({ type: 'set-dealer', newDealerID, currentPlayers })
   }
 
   const rotateBB = () => {
     let newBBID: number;
     const currentBB = players.filter(p => p.bigBlind)
+    const currentPlayers: PlayerType[] = players.filter(p => !p.folded)
     if (currentBB[0].id > 0 && currentBB[0].id < 4) {
       newBBID = currentBB[0].id + 1
     } else if (currentBB[0].id === 4) {
       newBBID = 1
     }
-    dispatch({ type: 'set-bb', newBBID })
+    dispatch({ type: 'set-bb', newBBID, currentPlayers })
   }
   const rotateSB = () => {
     let newSBID: number;
     const currentSB = players.filter(p => p.smallBlind)
+    const currentPlayers: PlayerType[] = players.filter(p => !p.folded)
     if (currentSB[0].id > 0 && currentSB[0].id < 4) {
       newSBID = currentSB[0].id + 1
     } else if (currentSB[0].id === 4) {
       newSBID = 1
     }
-    dispatch({ type: 'set-sb', newSBID })
+    dispatch({ type: 'set-sb', newSBID, currentPlayers })
   }
 
   const rotatePlayers = () => {
@@ -147,8 +150,8 @@ const App = () => {
     setCurrentGameStage(Gamestage[1])
     // PlayCardsound()
     if (players[0].hand.length === 0) {
-      players.forEach(p => p.hand.push(liveDeck.pop()))
-      players.forEach(p => p.hand.push(liveDeck.pop()))
+      players.forEach(p => !p.folded && p.hand.push(liveDeck.pop()))
+      players.forEach(p => !p.folded && p.hand.push(liveDeck.pop()))
       table.push(liveDeck.pop())
       table.push(liveDeck.pop())
       table.push(liveDeck.pop())
@@ -176,15 +179,35 @@ const App = () => {
   const getResult = async () => {
     if (table.length === 5) {
       const r = await fetchRankingResult()
+      console.log(r)
       dispatch({ type: 'set-result', r })
       // setGameResult(r)
     }
   }
 
+
+
   const fetchRankingResult = async () => {
     const finaltable = table.join(',')
     let players: PlayerType[] | string = [...state.players]
-    players = players.map((p) => `&pc[]=${p.hand.join(',')}`).join('')
+    players = players.filter(p => p.hand.length === 2 && { ...p })
+    players = players.map(p => `&pc[]=${p.hand.join(',')}`).join('')
+
+    console.log(players, finaltable)
+
+    //   .map(p => `&pc[]=${p.hand.join(',')}`).join('')))
+
+    // .filter((p) => p.hand !== null || undefined || []
+    //   .map(p => `&pc[]=${p.hand.join(',')}`).join(''))
+
+    // `&pc[]=${p.hand.join(',')}`).join('')
+    // .filter((p) =>
+    //   !p.folded && `&pc[]=${p.hand.join(',')}`).join('')
+
+    // players = players.map((p) =>
+    //   p.hand && `&pc[]=${p.hand.join(',')}`).join('')
+
+    // console.log(players, finaltable)
     let url = `https://api.pokerapi.dev/v1/winner/texas_holdem?cc=${finaltable}${players}`;
     try {
       const res = await fetch(url);

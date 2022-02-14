@@ -20,7 +20,8 @@ const PlayerControls: React.FC<Props> = ({ bigBlind, dispatch, player, players, 
 
     const foldPlayer = () => {
         dispatch({ type: 'fold', player })
-        makeNextActive(player.id)
+        // dispatch({ type: 'remove-folded-player', player })
+        // makeNextActive(player.id)
     }
 
     const makeNextActive = (id: number) => {
@@ -54,6 +55,8 @@ const PlayerControls: React.FC<Props> = ({ bigBlind, dispatch, player, players, 
             }}>
                 OK {betAmount}</button>}
             {/* {betAmount > 0 && <button type='submit' className='submit'>OK {betAmount}</button>} */}
+
+
         </div>
     </div>
 }

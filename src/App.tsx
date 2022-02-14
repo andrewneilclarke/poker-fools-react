@@ -129,6 +129,7 @@ const App = () => {
   // console.log(gameResult.winners)
   const playGame = () => {
     shuffleandSet();
+    dealPlayers();
     payBlinds(players);
     // create DEAL PLAYERS FUNCTION
     dealFlop();
@@ -137,8 +138,8 @@ const App = () => {
     // dealTurn();
     // dealRiver();
     // getResult();
-    payoutWinner();
-    nextGame()
+    // payoutWinner();
+    // nextGame()
   }
 
   const shuffleandSet = () => {
@@ -146,19 +147,24 @@ const App = () => {
     setLiveDeck(shuffed)
   }
 
-  const dealFlop = () => {
-    setCurrentGameStage(Gamestage[1])
-    // PlayCardsound()
+  const dealPlayers = () => {
+    setCurrentGameStage(Gamestage[0]);
     if (players[0].hand.length === 0) {
       players.forEach(p => !p.folded && p.hand.push(liveDeck.pop()))
+      // PlayCardsound()
       players.forEach(p => !p.folded && p.hand.push(liveDeck.pop()))
-      table.push(liveDeck.pop())
-      table.push(liveDeck.pop())
-      table.push(liveDeck.pop())
-      setLiveDeck([...liveDeck])
-      setGameOver(false)
     }
   }
+
+  const dealFlop = () => {
+    setCurrentGameStage(Gamestage[1])
+    table.push(liveDeck.pop())
+    table.push(liveDeck.pop())
+    table.push(liveDeck.pop())
+    setLiveDeck([...liveDeck])
+    setGameOver(false)
+  }
+
 
   const dealTurn = () => {
     setCurrentGameStage(Gamestage[2])
@@ -185,15 +191,15 @@ const App = () => {
     }
   }
 
+  const calculateTurn = (players: PlayerType[]) => {
 
+  }
 
   const fetchRankingResult = async () => {
     const finaltable = table.join(',')
     let players: PlayerType[] | string = [...state.players]
     players = players.filter(p => p.hand.length === 2 && { ...p })
     players = players.map(p => `&pc[]=${p.hand.join(',')}`).join('')
-
-    console.log(players, finaltable)
 
     //   .map(p => `&pc[]=${p.hand.join(',')}`).join('')))
 

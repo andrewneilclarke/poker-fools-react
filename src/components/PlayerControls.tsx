@@ -24,15 +24,14 @@ const PlayerControls: React.FC<Props> = ({ bigBlind, dispatch, player, players, 
         // makeNextActive(player.id)
     }
 
-    const makeNextActive = (id: number) => {
+    const getNextActive = (id: number) => {
         let nextActiveID: number;
-        // const currentActive = players.filter(p => p.active)
         if (id < 4) {
             nextActiveID = id + 1
         } else if (id === 4) {
             nextActiveID = 1
         }
-        dispatch({ type: 'make-next-active', nextActiveID })
+        return nextActiveID
     }
 
     return <div className="player-details">
@@ -49,9 +48,11 @@ const PlayerControls: React.FC<Props> = ({ bigBlind, dispatch, player, players, 
             <button onClick={reduceBet}>-</button>
             {/* SUBMIT (FINAL) */}
             {betAmount > 0 && <button onClick={() => {
+                let nextID = getNextActive(player.id)
                 dispatch({ type: 'submit-bet', betAmount, player });
+                dispatch({ type: 'make-next-active', nextID, player })
                 setBetAmount(0)
-                // makeNextActive()
+                console.log('nextID', nextID)
             }}>
                 OK {betAmount}</button>}
             {/* {betAmount > 0 && <button type='submit' className='submit'>OK {betAmount}</button>} */}

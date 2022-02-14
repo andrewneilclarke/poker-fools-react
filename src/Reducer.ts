@@ -18,10 +18,12 @@ export const betReducer = (state: AppState, action: any) => {
             }
         }
         case 'make-next-active': {
-            console.log(action.nextActiveID, state.players.map(p => p.id))
+            console.log(action.nextID)
+            console.log(action.player)
+            state.players.forEach(p => console.log('current playerIDs', p.id, p.active))
             return {
                 ...state,
-                players: state.players.map(p => p.id === action.nextActiveID ? { ...p, active: true } : { ...p, active: false })
+                players: state.players.map(p => p.id === action.player.id - 1 ? { ...p, active: true } : { ...p, active: false }),
             }
         }
         case 'fold': {

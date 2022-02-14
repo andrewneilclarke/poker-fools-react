@@ -8,13 +8,9 @@
     border: 25px solid rgb(50, 37, 23);
     border-radius: 55%;
     background-color: rgb(126, 201, 126);
-    /* background-color: rgb(17, 148, 17); */
     display: flex;
     justify-content: center;
     align-items: center;
-    /* position:fixed;
-    top: 45%; */
-    /* z-index: -1; */
 }
 
 .table-and-pot {

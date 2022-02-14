@@ -18,11 +18,15 @@ import Gameinfo from './components/Gameinfo';
 const initialState: AppState = {
   players: [
     { hand: [], stack: 300, id: 1, bet: 0, name: 'andy', dealer: true, bigBlind: false, smallBlind: false, active: false, folded: false, allin: false },
-    { hand: [], stack: 300, id: 2, bet: 0, name: 'rory', dealer: false, bigBlind: false, smallBlind: true, active: false, folded: true, allin: false },
+    { hand: [], stack: 300, id: 2, bet: 0, name: 'rory', dealer: false, bigBlind: false, smallBlind: true, active: false, folded: false, allin: false },
     { hand: [], stack: 300, id: 3, bet: 0, name: 'fred', dealer: false, bigBlind: true, smallBlind: false, active: false, folded: false, allin: false },
     { hand: [], stack: 300, id: 4, bet: 0, name: 'carlo', dealer: false, bigBlind: false, smallBlind: false, active: true, folded: false, allin: false },
   ],
   pot: 0,
+  rankingResult: {
+    winners: [],
+    players: []
+  }
 }
 
 const App = () => {
@@ -38,10 +42,6 @@ const App = () => {
   const [flipped, setFlipped] = useState<boolean>(true)
   const [flipTable, setFlipTable] = useState<boolean>(true)
   const [dealerID, setDealerID] = useState(1)
-  const [gameResult, setGameResult] = useState<RankingResult>({
-    winners: [],
-    players: []
-  })
   const [myError, setMyError] = useState<string | null>(null)
 
   // Calculate smallblind
@@ -63,18 +63,7 @@ const App = () => {
     // console.log('end')
   }, [])
 
-  const makeNextActive = () => {
-    let nextActiveID: number;
-    const currentActive = players.filter(p => p.active)
-    if (currentActive[0].id > 0 && currentActive[0].id < 4) {
-      nextActiveID = currentActive[0].id + 1
-    } else if (currentActive[0].id === 4) {
-      nextActiveID = 1
-    }
-    dispatch({ type: 'make-next-active', nextActiveID })
-  }
-
-  const payBlinds = () => {
+  const payBlinds = (players: PlayerType[]) => {
     const SB = players.filter(p => p.smallBlind)
     const BB = players.filter(p => p.bigBlind)
     dispatch({ type: 'pay-sb', SB, smallBlind })
@@ -131,13 +120,13 @@ const App = () => {
 
 
   const payoutWinner = () => {
-    dispatch({ type: 'payout', gameResult, players })
+    dispatch({ type: 'payout', players })
   }
 
   // console.log(gameResult.winners)
   const playGame = () => {
     shuffleandSet();
-    payBlinds();
+    payBlinds(players);
     // create DEAL PLAYERS FUNCTION
     dealFlop();
     // // FIRST ROUND OF BETS
@@ -187,7 +176,8 @@ const App = () => {
   const getResult = async () => {
     if (table.length === 5) {
       const r = await fetchRankingResult()
-      setGameResult(r)
+      dispatch({ type: 'set-result', r })
+      // setGameResult(r)
     }
   }
 
@@ -261,12 +251,12 @@ const App = () => {
 
       {/* DISPLAY TABLE / PLAYERS */}
 
-      <Table table={table} currentGameStage={currentGameStage} dispatch={dispatch} gameResult={gameResult} players={players} pot={state.pot} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} getCardFace={getCardFace} gameOver={gameOver} bigBlind={bigBlind} smallBlind={smallBlind} flipTable={flipTable} />
+      <Table table={table} currentGameStage={currentGameStage} dispatch={dispatch} gameResult={state.rankingResult} players={players} pot={state.pot} cardBack={cardBack} flipped={flipped} setFlipped={setFlipped} getCardFace={getCardFace} gameOver={gameOver} bigBlind={bigBlind} smallBlind={smallBlind} flipTable={flipTable} />
       <button onClick={rotatePlayers}>Rotate Dealer</button>
-      <button onClick={makeNextActive}>Make Next Active</button>
+
 
       {/* GAME INFO / STATS DISPLAY */}
-      <Gameinfo bigBlind={bigBlind} currentGameStage={currentGameStage} pot={state.pot} smallBlind={smallBlind} gameResult={gameResult} players={players} myError={myError} />
+      <Gameinfo bigBlind={bigBlind} currentGameStage={currentGameStage} pot={state.pot} smallBlind={smallBlind} gameResult={state.rankingResult} players={players} myError={myError} />
     </div>
 
   );

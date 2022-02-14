@@ -49,6 +49,7 @@ export enum PlayerStatus {
 export interface AppState {
     players: PlayerType[]
     pot: number
+    rankingResult: RankingResult
 }
 
 // interface Game {

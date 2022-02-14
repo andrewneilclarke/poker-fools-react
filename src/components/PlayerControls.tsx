@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { PlayerType } from '../Interfaces'
 
-
 interface Props {
     player: PlayerType,
     players: PlayerType[]
@@ -18,17 +17,34 @@ const PlayerControls: React.FC<Props> = ({ bigBlind, dispatch, player, players, 
             setBetAmount(betAmount - smallBlind)
         }
     }
+
+    const foldPlayer = () => {
+        dispatch({ type: 'fold', player })
+        makeNextActive(player.id)
+    }
+
+    const makeNextActive = (id: number) => {
+        let nextActiveID: number;
+        // const currentActive = players.filter(p => p.active)
+        if (id < 4) {
+            nextActiveID = id + 1
+        } else if (id === 4) {
+            nextActiveID = 1
+        }
+        dispatch({ type: 'make-next-active', nextActiveID })
+    }
+
     return <div className="player-details">
         <div className="player-buttons">
             {/* CHECK */}
             {player.bet === betAmount && player.bet !== 0 && <button onClick={() => dispatch({ type: 'check', player, betAmount })}>Check</button>}
             {/* FOLD */}
-            <button onClick={() => dispatch({ type: 'fold', player, betAmount })}>Fold</button>
+            <button onClick={foldPlayer}>Fold</button>
             {/* CALL */}
             {player.bet < bigBlind && <button onClick={() => dispatch({ type: 'call', betAmount, player, bigBlind })}>Call {bigBlind}</button>}
             {/* RAISE */}
             <button onClick={() => setBetAmount((prev) => betAmount + smallBlind)}>Raise {smallBlind}</button>
-            {/* REDUCE BET */}
+            {/* REDUCE BET AMOUNT */}
             <button onClick={reduceBet}>-</button>
             {/* SUBMIT (FINAL) */}
             {betAmount > 0 && <button onClick={() => {
@@ -38,8 +54,6 @@ const PlayerControls: React.FC<Props> = ({ bigBlind, dispatch, player, players, 
             }}>
                 OK {betAmount}</button>}
             {/* {betAmount > 0 && <button type='submit' className='submit'>OK {betAmount}</button>} */}
-            {<p>{player.bet}</p>}
-
         </div>
     </div>
 }

@@ -14,13 +14,14 @@ export const betReducer = (state: AppState, action: any) => {
         case 'make-active': {
             return {
                 ...state,
-                players: state.players.map(p => p.name === action.player.name && !p.folded ? { ...p, active: true } : { ...p, active: false })
+                players: state.players.map(p => p.name === action.player.name ? { ...p, active: true } : { ...p, active: false })
             }
         }
         case 'make-next-active': {
+            console.log(action.nextActiveID, state.players.map(p => p.id))
             return {
                 ...state,
-                players: state.players.map(p => p.id === action.nextActiveID && !p.folded ? { ...p, active: true } : { ...p, active: false })
+                players: state.players.map(p => p.id === action.nextActiveID ? { ...p, active: true } : { ...p, active: false })
             }
         }
         case 'fold': {
@@ -29,6 +30,18 @@ export const betReducer = (state: AppState, action: any) => {
                 players: state.players.map(p => p.name === action.player.name ? { ...p, active: false, folded: true, bet: 0 } : { ...p }),
             }
         }
+        case 'set-result': {
+            return {
+                ...state,
+                rankingResult: action.r,
+            }
+        }
+        // case 'remove-folded-player': {
+        //     return {
+        //         ...state,
+        //         players: state.players.filter(p => !p.folded),
+        //     }
+        // }
         case 'check': {
             return {
                 ...state,
